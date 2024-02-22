@@ -2,8 +2,8 @@ import contextlib
 import logging
 import os
 import sys
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Iterable
 
 from poetry.core.packages.dependency import Dependency
 from poetry.core.packages.package import Package
@@ -51,11 +51,10 @@ class DependencyMerger:
         with contextlib.suppress(StopIteration):
             # check for dependency conflict
             other_dep, other_pkg = next((d, p) for d, p in self._deps if d.name == dep.name)
-            if other_dep:
-                if other_dep != dep:
-                    msg = f"Conflicting dependencies detected:\n  {dep} [{pkg.name}]\n  {other_dep} [{other_pkg}]"
-                    raise PackageConflictError(msg)
-                return  # identical dep -> fine!
+            if other_dep != dep:
+                msg = f"Conflicting dependencies detected:\n  {dep} [{pkg.name}]\n  {other_dep} [{other_pkg}]"
+                raise PackageConflictError(msg)
+            return  # identical dep -> fine!
         self._deps.append((dep, pkg))
 
 
@@ -63,7 +62,7 @@ manager = DependencyMerger(poe_root)
 
 
 def merge() -> None:
-    """Merge questionpy package dependencies and print as semicolon separated string."""
+    """Merge QuestionPy package dependencies and print as semicolon separated string."""
     try:
         manager.merge()
         print(";".join(str(dep) for dep in manager.deps))
@@ -74,6 +73,7 @@ def merge() -> None:
 
 
 def check() -> None:
+    """Check QuestionPy package dependencies."""
     try:
         manager.merge()
         for dep in manager.deps:
