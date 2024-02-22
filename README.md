@@ -9,18 +9,30 @@
 ```sh
 $ git clone git@github.com:questionpy-org/qpy-dev.git
 $ cd qpy-dev
-$ poetry install
+$ poetry install --no-root
 $ alias poe="poetry run poe"
+$ poe moodle:start
+$ poe qpy:install
 $ poe qpy:serve
 ```
 
 ### Usage
+
+#### Available Tasks
 
 See the online help for a list of available commands and their descriptions.
 
 ```
 $ poe --help
 ```
+
+#### Configuration
+
+```
+$ cp .env .env.local
+```
+
+Edit `.env.local` to your liking.
 
 ### Goals & Non-Goals
 

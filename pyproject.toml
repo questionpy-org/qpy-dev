@@ -36,14 +36,13 @@ envfile = [
   ".env.local",
 ]
 include = [
-  "./modules/poe/utils.toml",
-  "./modules/poe/repos.toml",
-  "./modules/poe/moodle.toml",
-  "./modules/poe/deps.toml",
-  "./modules/poe/qpy.toml",
+  "./modules/utils.toml",
+  "./modules/repos.toml",
+  "./modules/moodle.toml",
+  "./modules/qpy.toml",
 ]
 
-# TODO: set moodle-docker env vars globally once bug is resolved
+# FIXME: set moodle-docker env vars globally once bug is resolved
 # https://github.com/nat-n/poethepoet/issues/198
 # [tool.poe.env]
 # MOODLE_DOCKER_WWWROOT = "${POE_ROOT}/vendor/moodle"

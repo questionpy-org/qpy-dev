@@ -1,0 +1,68 @@
+### qpy:serve
+
+[tool.poe.tasks."qpy:serve"]
+help = "Run QPy dev server."
+cwd = "./questionpy/server"
+cmd = "python -m questionpy_server"
+use_exec = true
+deps = [
+  "_repos:clone:ensure-repos-qpy",
+  "_qpy:ensure-config",
+  "_qpy:ensure-cache-dir",
+]
+
+### qpy:watch
+
+[tool.poe.tasks."qpy:watch"]
+help = "Run QPy dev server (watch mode)."
+cwd = "./questionpy/server"
+# TODO
+cmd = "echo watchmedo auto-restart --pattern *.py --recursive --signal SIGTERM  python app.py"
+use_exec = true
+deps = [
+  "_repos:clone:ensure-repos-qpy",
+  "_qpy:ensure-config",
+  "_qpy:ensure-cache-dir",
+]
+
+### qpy:install
+
+[tool.poe.tasks."qpy:install"]
+help = "Install QPy packages and dependencies in dev env."
+deps = ["_repos:clone:ensure-repos-qpy"]
+shell = """
+  export IFS=";"
+  for dep in $DEPENDENCIES; do
+    poetry run pip install --no-input --disable-pip-version-check "${dep}"
+  done
+  poetry run pip install --no-input --disable-pip-version-check --no-deps --editable questionpy/common
+  poetry run pip install --no-input --disable-pip-version-check --no-deps --editable questionpy/sdk
+  poetry run pip install --no-input --disable-pip-version-check --no-deps --editable questionpy/server
+"""
+uses = { DEPENDENCIES = "_qpy:merge-dependencies" }
+
+### qpy:check-deps
+
+[tool.poe.tasks."qpy:check-deps"]
+help = "Check if QPy package dependencies are in sync."
+deps = ["_repos:clone:ensure-repos-qpy"]
+env = { "PYTHONPATH" = "./modules" }
+script = "deps:check"
+
+### private tasks
+
+[tool.poe.tasks."_qpy:ensure-config"]
+cwd = "./questionpy/server"
+shell = """
+  if [[ ! -f config.ini ]]; then
+    cp config.example.ini config.ini
+  fi
+"""
+
+[tool.poe.tasks."_qpy:ensure-cache-dir"]
+cwd = "./questionpy/server"
+cmd = "mkdir -p cache/packages cache/repo_index"
+
+[tool.poe.tasks."_qpy:merge-dependencies"]
+env = { "PYTHONPATH" = "./modules" }
+script = "deps:merge"
