@@ -13,9 +13,21 @@ version = "0.0.0"
 [tool.poetry.dependencies]
 python = "^3.9"
 poethepoet = "^0.24.4"
-# questionpy-common = { path = "./questionpy/common", develop = true }
-# questionpy-sdk    = { path = "./questionpy/sdk",    develop = true }
-# questionpy-server = { path = "./questionpy/server", develop = true }
+poetry = "^1.7.1"
+
+[tool.poetry.group.linter]
+dependencies = { ruff = "^0.2.2" }
+
+[tool.poetry.group.type-checker]
+dependencies = { mypy = "^1.1.1" }
+
+[tool.mypy]
+disallow_untyped_defs = true
+strict_optional = true
+show_error_codes = true
+exclude = [
+  "^questionpy/.+\\.py$",
+]
 
 [tool.poe]
 verbosity = -1
@@ -24,10 +36,11 @@ envfile = [
   ".env.local",
 ]
 include = [
-  "./modules/utils.toml",
-  "./modules/repos.toml",
-  "./modules/moodle.toml",
-  "./modules/qpy.toml",
+  "./modules/poe/utils.toml",
+  "./modules/poe/repos.toml",
+  "./modules/poe/moodle.toml",
+  "./modules/poe/deps.toml",
+  "./modules/poe/qpy.toml",
 ]
 
 # TODO: set moodle-docker env vars globally once bug is resolved
@@ -35,3 +48,62 @@ include = [
 # [tool.poe.env]
 # MOODLE_DOCKER_WWWROOT = "${POE_ROOT}/vendor/moodle"
 # COMPOSE_PROJECT_NAME= "${MOODLE_DOCKER_COMPOSE_PROJECT_NAME}"
+
+[tool.ruff]
+target-version = "py39"
+line-length = 120
+include = ["modules/python/**/*.py"]
+
+[tool.ruff.lint]
+# https://docs.astral.sh/ruff/rules/
+select = [
+    "F",        # pyflakes
+    "E",        # pycodestyle error
+    "PL",       # pylint
+
+                # flake8
+    "A",        #   -builtins
+    "B",        #   -bugbear
+    "BLE",      #   -blind-except
+    "C4",       #   -comprehensions
+    "DTZ",      #   -datetimez
+    "G",        #   -logging-format
+    "PIE",      #   -pie
+    "PT",       #   -pytest-style
+    "Q",        #   --quotes
+    "S",        #   -bandit
+    "SIM",      #   -simplify
+    "TID",      #   -tidy-imports
+
+    "C90",      # mccabe
+    "D",        # pydocstyle
+    "ERA",      # eradicate
+    "I",        # isort
+    "N",        # pep8-naming
+    "UP",       # pyupgrade
+    "RUF",      # Ruff-specific rules
+]
+fixable = ["ALL"]
+ignore = [
+                # Missing docstring in
+    "D100",     #   module
+    "D101",     #   class
+    "D102",     #   method
+    "D103",     #   function
+    "D104",     #   package
+    "D107",     #   __init__
+]
+pydocstyle = { convention = "google" }
+
+[tool.ruff.lint.per-file-ignores]
+# Allow `assert` in tests
+"tests/**/*.py" = ["S101"]
+
+[tool.ruff.lint.pylint]
+max-args = 10
+max-branches = 15
+max-nested-blocks = 10
+
+[tool.ruff.lint.mccabe]
+# Flag errors (`C901`) whenever the complexity exceeds level.
+max-complexity = 10

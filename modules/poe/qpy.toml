@@ -1,0 +1,34 @@
+### qpy:serve
+
+[tool.poe.tasks."qpy:serve"]
+help = "Run QPy dev server."
+cwd = "./questionpy/server"
+cmd = "python -m questionpy_server"
+use_exec = true
+deps = [
+  "_repos:clone:ensure-repos-qpy",
+  "_qpy:ensure-config",
+]
+
+### qpy:watch
+
+[tool.poe.tasks."qpy:watch"]
+help = "Run QPy dev server (watch mode)."
+cwd = "./questionpy/server"
+# TODO
+cmd = "echo watchmedo auto-restart --pattern *.py --recursive --signal SIGTERM  python app.py"
+use_exec = true
+deps = [
+  "_repos:clone:ensure-repos-qpy",
+  "_qpy:ensure-config",
+]
+
+[tool.poe.tasks."_qpy:ensure-config"]
+cwd = "./questionpy/server"
+shell = """
+  if [[ ! -f config.ini ]]; then
+    cp config.example.ini config.ini
+    sed -i "s/^#listen_address\\s*=\\s*.\\+$/listen_address = ${QPY_LISTEN_ADDRESS}/" config.ini
+    sed -i "s/^#listen_port\\s*=\\s*.\\+$/port = ${QPY_LISTEN_PORT}/" config.ini
+  fi
+"""

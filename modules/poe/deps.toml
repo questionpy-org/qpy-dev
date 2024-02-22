@@ -1,0 +1,19 @@
+### deps:install
+
+[tool.poe.tasks."deps:install"]
+help = "Install QPy packages and dependencies in dev env."
+deps = ["_repos:clone:ensure-repos-qpy"]
+shell = """
+  export IFS=";"
+  for dep in $DEPENDENCIES; do
+    poetry run pip install --disable-pip-version-check "${dep}"
+  done
+  poetry run pip install --disable-pip-version-check --no-deps --editable questionpy/common
+  poetry run pip install --disable-pip-version-check --no-deps --editable questionpy/sdk
+  poetry run pip install --disable-pip-version-check --no-deps --editable questionpy/server
+"""
+uses = { DEPENDENCIES = "_deps:merge-dependencies" }
+
+[tool.poe.tasks."_deps:merge-dependencies"]
+env = { "PYTHONPATH" = "./modules/python" }
+script = "qpy_dev.merge_dependencies:run"

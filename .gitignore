@@ -6,6 +6,7 @@
 
 /.venv
 /.idea
+/.vscode
 *.iml
 __pycache__
 

@@ -1,0 +1,2 @@
+class QPyDevError(Exception):
+    pass
