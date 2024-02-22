@@ -7,7 +7,13 @@ shell = """
 """
 
 [tool.poe.tasks."_utils:git-clone"]
-shell = "[[ ! -d \"$dir\" ]] && git clone --branch $branch $repo \"$dir\""
+shell = """
+  if [[ ! -d "$dir" ]]; then
+    git clone --branch $branch $repo "$dir"
+  else
+    exit 0
+  fi
+"""
 args = [
   { "name" = "repo",   positional = true, required = true },
   { "name" = "dir",    positional = true, required = true },

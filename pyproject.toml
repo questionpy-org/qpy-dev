@@ -13,6 +13,9 @@ version = "0.0.0"
 [tool.poetry.dependencies]
 python = "^3.9"
 poethepoet = "^0.24.4"
+# questionpy-common = { path = "./questionpy/common", develop = true }
+# questionpy-sdk    = { path = "./questionpy/sdk",    develop = true }
+# questionpy-server = { path = "./questionpy/server", develop = true }
 
 [tool.poe]
 verbosity = -1
@@ -22,12 +25,13 @@ envfile = [
 ]
 include = [
   "./modules/utils.toml",
-  "./modules/setup.toml",
+  "./modules/repos.toml",
   "./modules/moodle.toml",
   "./modules/qpy.toml",
 ]
 
-# TODO: set moodle-docker env var globally once bug is resolved
+# TODO: set moodle-docker env vars globally once bug is resolved
 # https://github.com/nat-n/poethepoet/issues/198
 # [tool.poe.env]
 # MOODLE_DOCKER_WWWROOT = "${POE_ROOT}/vendor/moodle"
+# COMPOSE_PROJECT_NAME= "${MOODLE_DOCKER_COMPOSE_PROJECT_NAME}"

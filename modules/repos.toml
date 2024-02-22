@@ -1,0 +1,32 @@
+### repos:clone
+
+[tool.poe.tasks."repos:clone"]
+help = "Clone all repositories."
+sequence = [
+  "_repos:clone:ensure-repos-qpy",
+  "_repos:clone:ensure-repos-moodle",
+]
+
+### private tasks
+
+[tool.poe.tasks."_repos:clone:ensure-repos-qpy"]
+ignore_fail = true
+default_item_type = "ref"
+sequence = [
+  "_utils:git-clone $REPO_QUESTIONPY_COMMON       ./questionpy/common",
+  "_utils:git-clone $REPO_QUESTIONPY_DOCS         ./questionpy/docs",
+  "_utils:git-clone $REPO_QUESTIONPY_SDK          ./questionpy/sdk",
+  "_utils:git-clone $REPO_QUESTIONPY_SERVER       ./questionpy/server",
+  "_utils:git-clone $REPO_MOODLE_QTYPE_QUESTIONPY ./questionpy/moodle-qtype",
+]
+
+[tool.poe.tasks."_repos:clone:ensure-repos-qpy-qtype"]
+ref = "_utils:git-clone $REPO_MOODLE_QTYPE_QUESTIONPY ./questionpy/moodle-qtype"
+
+[tool.poe.tasks."_repos:clone:ensure-repos-moodle"]
+ignore_fail = true
+default_item_type = "ref"
+sequence = [
+  "_utils:git-clone $REPO_MOODLE                  ./vendor/moodle             --branch $REPO_MOODLE_TAG",
+  "_utils:git-clone $REPO_MOODLE_DOCKER           ./vendor/moodle-docker      --branch main",
+]
