@@ -1,0 +1,33 @@
+[build-system]
+requires = ["poetry_core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "qpy-dev"
+description = "Dev repository to facilitate multi-repo development for QuestionPy"
+authors = ["Technische Universität Berlin, innoCampus <info@isis.tu-berlin.de>"]
+license = "MIT"
+homepage = "https://questionpy.org"
+version = "0.0.0"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+poethepoet = "^0.24.4"
+
+[tool.poe]
+verbosity = -1
+envfile = [
+  ".env",
+  ".env.local",
+]
+include = [
+  "./modules/utils.toml",
+  "./modules/setup.toml",
+  "./modules/moodle.toml",
+  "./modules/qpy.toml",
+]
+
+# TODO: set moodle-docker env var globally once bug is resolved
+# https://github.com/nat-n/poethepoet/issues/198
+# [tool.poe.env]
+# MOODLE_DOCKER_WWWROOT = "${POE_ROOT}/vendor/moodle"

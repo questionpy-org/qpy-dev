@@ -1,0 +1,15 @@
+[tool.poe.tasks."_utils:ensure-docker"]
+shell = """
+  if ! $(docker info >/dev/null 2>&1); then
+    echo 'Docker daemon is not running!'
+    exit 1
+  fi
+"""
+
+[tool.poe.tasks."_utils:git-clone"]
+shell = "[[ ! -d \"$dir\" ]] && git clone --branch $branch $repo \"$dir\""
+args = [
+  { "name" = "repo",   positional = true, required = true },
+  { "name" = "dir",    positional = true, required = true },
+  { "name" = "branch", default = "dev" },
+]

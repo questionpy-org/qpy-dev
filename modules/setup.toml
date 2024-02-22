@@ -1,0 +1,23 @@
+[tool.poe.tasks.setup]
+help = "Set up development environment."
+sequence = [
+  { ref = "_setup:clone-repos" },
+  { ref = "_setup:qtype-questionpy-symlink" },
+]
+
+[tool.poe.tasks."_setup:clone-repos"]
+ignore_fail = true
+default_item_type = "ref"
+sequence = [
+  "_utils:git-clone $REPO_QUESTIONPY_COMMON       ./questionpy/common",
+  "_utils:git-clone $REPO_QUESTIONPY_DOCS         ./questionpy/docs",
+  "_utils:git-clone $REPO_QUESTIONPY_SDK          ./questionpy/sdk",
+  "_utils:git-clone $REPO_QUESTIONPY_SERVER       ./questionpy/server",
+  "_utils:git-clone $REPO_MOODLE                  ./vendor/moodle                            --branch $REPO_MOODLE_TAG",
+  # TODO: mount qtype_questionpy into container via volume
+  "_utils:git-clone $REPO_MOODLE_QTYPE_QUESTIONPY ./vendor/moodle/question/type/questionpy",
+  "_utils:git-clone $REPO_MOODLE_DOCKER           ./vendor/moodle-docker                     --branch main",
+]
+
+[tool.poe.tasks."_setup:qtype-questionpy-symlink"]
+cmd = "ln -s ../vendor/moodle/question/type/questionpy questionpy/moodle-qtype_questionpy"

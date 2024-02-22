@@ -1,0 +1,11 @@
+[tool.poe.tasks."qpy:serve"]
+help = "Run QPy dev server."
+cmd = "myapp:run"
+args = [
+  { name = "host", default = "localhost" },
+  { name = "port", default = "9000" },
+]
+
+[tool.poe.tasks."qpy:watch"]
+help = "Run QPy dev server."
+cmd = "watchmedo auto-restart --pattern *.py --recursive --signal SIGTERM  python app.py"

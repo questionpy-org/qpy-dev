@@ -1,0 +1,13 @@
+.DS_Store
+*~
+*.local
+.env.local
+.tox
+
+/.venv
+/.idea
+*.iml
+__pycache__
+
+/questionpy
+/vendor

@@ -1,0 +1,50 @@
+[tool.poe.tasks."moodle:start"]
+help = "Start Moodle Docker stack."
+cwd = "./vendor/moodle-docker"
+deps = ["_moodle:add-local-yml", "_utils:ensure-docker"]
+default_item_type = "cmd"
+env = { "MOODLE_DOCKER_WWWROOT" = "${POE_ROOT}/vendor/moodle" }
+sequence = [
+  "./bin/moodle-docker-compose up -d",
+  "echo -n Waiting for DB...",
+  "./bin/moodle-docker-wait-for-db",
+  "echo ' done'",
+  { ref = "_moodle:post-start-hook" }
+]
+
+[tool.poe.tasks."moodle:logs"]
+help = "Monitor Moodle logs."
+cwd = "./vendor/moodle-docker"
+deps = ["_utils:ensure-docker"]
+env = { "MOODLE_DOCKER_WWWROOT" = "${POE_ROOT}/vendor/moodle" }
+cmd = "./bin/moodle-docker-compose logs --follow --tail=100 webserver"
+
+[tool.poe.tasks."moodle:stop"]
+help = "Stop Moodle stack."
+cwd = "./vendor/moodle-docker"
+deps = ["_utils:ensure-docker"]
+env = { "MOODLE_DOCKER_WWWROOT" = "${POE_ROOT}/vendor/moodle" }
+cmd = "./bin/moodle-docker-compose stop"
+
+[tool.poe.tasks."moodle:rm"]
+help = "Destroy Moodle stack (clear database)."
+cwd = "./vendor/moodle-docker"
+deps = ["_utils:ensure-docker"]
+env = { "MOODLE_DOCKER_WWWROOT" = "${POE_ROOT}/vendor/moodle" }
+cmd = "./bin/moodle-docker-compose rm --stop --volumes"
+
+# Add entry to webserver container /etc/hosts file, so that Moodle can
+# access the QPy server via fixed host name.
+[tool.poe.tasks."_moodle:add-local-yml"]
+cwd = "./vendor/moodle-docker"
+shell = """
+  [[ -f local.yml ]] && exit 0
+  echo 'version: "2"
+  services:
+    webserver:
+      extra_hosts:
+        - "host.docker.internal:host-gateway"' > local.yml
+"""
+
+[tool.poe.tasks."_moodle:post-start-hook"]
+shell = "${MOODLE_DOCKER_POST_HOOK}"
