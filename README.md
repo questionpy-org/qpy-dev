@@ -34,43 +34,70 @@ $ cp .env .env.local
 
 Edit `.env.local` to your liking.
 
-### Goals & Non-Goals
+#### Persistent `poe` Alias
 
-#### Goals
-
-- [x] **Aggregate common developer tasks and work flows in a central place.**  
-  When developers can share a common workflow, DX, general productivity as well
-  as reproducibility should improve. A friendly place called `./scratch/` invites
-  developers to share unfinished/experimental code and data.
-
-- [x] **Provide a single virtual environment for developing.**  
-  Managing a separate virtual env for each project manually is tedious and
-  repetitive. Instead *a single* development environment is used that is managed
-  automatically and can be used by tools such as type checkers, linters and
-  IDEs.
-
-- [ ] **Manage dependencies across multiple `pyproject.toml` Python projects.**  
-  Manually sync'ing dependencies across a number of Python projects can quickly
-  become cumbersome and error-prone. An automated strategy is implemented that
-  helps to carry out this task in a safe and reproducible manner.
-
-- [x] **Handle package interdependencies during development.**  
-  Unfortunately Poetry does not yet support overriding dependencies to use
-  a local path package during development or other advanced techniques (such
-  as *workspaces*): python-poetry/poetry#1168  
-  Therefore we handle those dependencies from within the dev environment,
-  leaving the actual packages fully intact with fixed non-path dependency specs.
-
-#### Non-Goals
-
-- **Handle package interdependencies during release.**  
-  This project **does not** solve the PR waterfall issue that occurs when
-  commiting changes that involve multiple QuestionPy packages.  
-  Developers have to take care to create and merge PRs in the correct order,
-  so inter-project dependencies don't cause failed CI pipelines or defunct code.
-
-### Persistent `poe` Alias
+Add `poe` alias to your login shell.
 
 ```sh
 $ echo 'alias poe="poetry run poe"' >> ~/.bash_profile
 ```
+
+### Todos
+
+- **Manage unified single virtual env**
+  - [x] Install repo deps in a unified dev venv
+    - [ ] Installing in less pip calls possible? Maybe just use a tempory `requirements.txt`?
+  - [ ] "Dependency Merger" (creates list of conflict-free dependencies from all repos)
+      - [x] Implement merger
+      - [x] Check if repo deps are conflict-free
+      - [ ] Consider all (optional) groups
+      - [ ] Use `dict[dep.name, tuple[Dep, Pkg]]` for `DependencyMerger._deps`?
+      - [ ] Use (version constraint) intersection of conflicting deps
+        - Raise error if result is empty
+      - [ ] Consider dep extras: use union of conflicting deps extras
+      - (Idea: Choose one or the other interactively when a conflict occurs. Can also be done manually/is probably overkill.)
+- **Common developer tasks and workflows**
+  - [ ] linter/type-checker/tests
+    - [ ] tox config to run all all/some/single repository
+  - [ ] common git tasks?
+    - [ ] git clone
+      - [x] all repos
+      - [ ] some repos, single repo
+    - [ ] git pull
+  - [x] Manage Moodle dev stack
+    - [x] Tasks
+      - [x] start
+      - [x] stop
+      - [x] reset/remove
+      - [x] log tail
+      - [x] access to docker-compose command
+    - [x] Automate config (`local.yml`)
+      - [x] Add `host.docker.internal` to webserver container `/etc/hosts` so QPy server can be specified by using a fixed hostname in Moodle
+      - [x] `qtype-questionpy` as bind volume into the webserver container
+    - [ ] Start/stop hooks (mainly need this for creating/removing a Firewall rule to allow the Moodle webserver container to access the QPy server on my host)
+  - [ ] Handle QPy server
+    - [ ] Tasks
+      - [x] start dev server
+      - [ ] watch dev server
+    - [x] Create `config.ini`
+    - [x] Pass env vars
+    - [x] Create cache directories
+- **Update tooling**
+  - [ ] Add ruff (replacing Pylint, Flake8)
+    - [ ] Possible to have preset rules (like Eslint sharable config)?  
+      - No, not yet. https://github.com/astral-sh/ruff/discussions/3363
+        - [ ] Can be mimicked by using [`extend`](https://docs.astral.sh/ruff/settings/#extend)  
+          Solution: Have `ruff_defaults.toml` in `qpy-dev` and create command that sync's it into the QPy repos.
+        - Look at [hatch default config](https://hatch.pypa.io/latest/config/static-analysis/#default-settings)  
+          https://github.com/pypa/hatch/blob/master/ruff_defaults.toml
+    - [ ] Add common ruleset to all 3 repos
+    - [ ] Add `ruff format --check` to tox
+    - [ ] Add `ruff format` task
+  - [ ] Add https://github.com/commitizen-tools/commitizen?
+  - [ ] Fix this bug and create PR: https://github.com/nat-n/poethepoet/issues/198
+
+### Non-Goal
+
+- Not addressing the PR waterfall issue that occurs when commiting changes that
+  involve multiple QuestionPy packages. No idea how to do this (unless
+  migrating ot a monorepo)...
