@@ -1,0 +1,117 @@
+# Partly based on https://github.com/pypa/hatch/blob/master/ruff_defaults.toml
+
+target-version = "py39"
+line-length = 120
+output-format = "concise"
+preview = true
+
+[format]
+docstring-code-format = true
+docstring-code-line-length = 80
+
+[lint]
+# https://docs.astral.sh/ruff/rules/
+select = [
+    "F",        # pyflakes
+    "E",        # pycodestyle errors
+    "W",        # pycodestyle warnings
+    "PL",       # pylint
+
+                # flake8
+    "A",        #   -builtins
+    "ARG",      #   -unused-arguments
+    "ASYNC",    #   -async
+    "B",        #   -bugbear
+    "BLE",      #   -blind-except
+    "C4",       #   -comprehensions
+    "COM",      #   -commas
+    "DTZ",      #   -datetimez
+    "EM",       #   -errmsg
+    "EXE",      #   -executable
+    "FA",       #   -future-annotations
+    "FBT",      #   -boolean-trap
+    "G",        #   -logging-format
+    "ICN",      #   -import-conventions
+    "INP",      #   -no-pep420
+    "INT",      #   -gettext
+    "ISC",      #   -implicit-str-concat
+    "LOG",      #   -logging
+    "PIE",      #   -pie
+    "PT",       #   -pytest-style
+    "PYI",      #   -pyi
+    "Q",        #   --quotes
+    "RET",      #   -return
+    "RSE",      #   -raise
+    "S",        #   -bandit
+    "SIM",      #   -simplify
+    "SLOT",     #   -slots
+    "T10",      #   -debugger
+    "T20",      #   -print
+    "TCH",      #   -type-checking
+    "TD004",    #   -todos
+    "TD005",
+    "TD006",
+    "TD007",
+    "TID",      #   -tidy-imports
+    "YTT",      #   -2020
+
+    "C90",      # mccabe
+    "D",        # pydocstyle
+    "ERA",      # eradicate
+    "FLY",      # flynt
+    "FURB",     # refurb
+    "I",        # isort
+    "N",        # pep8-naming
+    "PERF",     # Perflint
+    "PGH",      # pygrep-hooks
+    "RUF",      # Ruff-specific rules
+    "TRY",      # tryceratops
+    "UP",       # pyupgrade
+]
+
+ignore = [
+  # Relax on missing docstrings
+  "D100",     #   module
+  "D101",     #   class
+  "D102",     #   method
+  "D103",     #   function
+  "D104",     #   package
+  "D107",     #   __init__
+]
+
+pydocstyle = { convention = "google" }
+
+[lint.per-file-ignores]
+"**/scripts/*" = [
+  "INP001",
+  "T201",
+]
+"**/tests/**/*" = [
+  "PLC1901",
+  "PLR2004",
+  "PLR6301",
+  "S",
+  "TID252",
+]
+
+[lint.flake8-pytest-style]
+fixture-parentheses = false
+mark-parentheses = false
+
+[lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[lint.isort]
+known-first-party = [
+  "questionpy-common",
+  "questionpy-sdk",
+  "questionpy-server",
+]
+
+[lint.mccabe]
+max-complexity = 10
+
+[lint.pylint]
+max-args = 10
+max-branches = 15
+max-nested-blocks = 10
