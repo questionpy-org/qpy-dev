@@ -46,16 +46,16 @@ $ echo 'alias poe="poetry run poe"' >> ~/.bash_profile
 
 - **Manage unified single virtual env**
   - [x] Install repo deps in a unified dev venv
-    - [ ] Installing in less pip calls possible? Maybe just use a tempory `requirements.txt`?
-  - [ ] "Dependency Merger" (creates list of conflict-free dependencies from all repos)
+    - [x] Installing in less pip calls possible? Maybe just use a tempory `requirements.txt`?
+  - [x] "Dependency Merger" (creates list of conflict-free dependencies from all repos)
       - [x] Implement merger
       - [x] Check if repo deps are conflict-free
-      - [ ] Consider all (optional) groups
-        - [ ] And remove them from qpy-dev `pyproject.toml`
-      - [ ] Use `dict[dep.name, tuple[Dep, Pkg]]` for `DependencyMerger._deps`?
-      - [ ] Use (version constraint) intersection of conflicting deps
+      - [x] Consider all (optional) groups
+        - [x] And remove them from qpy-dev `pyproject.toml`
+      - [x] Use `dict[dep.name, tuple[Dep, Pkg]]` for `DependencyMerger._deps`?
+      - [x] Use (version constraint) intersection of conflicting deps
         - Raise error if result is empty
-      - [ ] Consider dep extras: use union of conflicting deps extras
+      - [x] Consider dep extras: use union of conflicting deps extras
       - (Idea: Choose one or the other interactively when a conflict occurs. Can also be done manually/is probably overkill.)
 - **Common developer tasks and workflows**
   - [ ] common git tasks?

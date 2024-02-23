@@ -2,73 +2,86 @@ import contextlib
 import logging
 import os
 import sys
-from collections.abc import Iterable
+from operator import attrgetter
 from pathlib import Path
 
+from poetry.core.factory import Factory
 from poetry.core.packages.dependency import Dependency
+from poetry.core.packages.dependency_group import MAIN_GROUP
 from poetry.core.packages.package import Package
-from poetry.inspection.info import PackageInfo
 
-PACKAGE_DIRS = ("common", "sdk", "server")
-
-poe_root = os.environ.get("POE_ROOT")
-if poe_root is None:
+poe_root_str = os.environ.get("POE_ROOT", "")
+if not poe_root_str:
     msg = "POE_ROOT is not set"
     raise ValueError(msg)
-logging_level = os.environ.get("QPY_DEV_LOG_LEVEL")
-if logging_level is None:
-    msg = "QPY_DEV_LOG_LEVEL is not set"
-    raise ValueError(msg)
+poe_root = Path(poe_root_str)
 
+logging_level = os.environ.get("QPY_DEV_LOG_LEVEL", "INFO")
 logging.basicConfig(level=logging_level)
 logger = logging.getLogger(__name__)
 
 
-class PackageConflictError(Exception):
+class VersionConstraintError(Exception):
     pass
 
 
 class DependencyMerger:
-    def __init__(self, root_dir: str) -> None:
-        self._logger = logging.getLogger(DependencyMerger.__name__)
+    PACKAGE_DIRS = ("common", "sdk", "server")
+    GROUPS = (MAIN_GROUP, "dev", "test", "linter", "type-checker")
+
+    def __init__(self, root_dir: Path) -> None:
         self._root_dir = root_dir
-        self._deps: list[tuple[Dependency, Package]] = []
+        self._deps: dict[str, tuple[Dependency, Package]] = {}
 
     def merge(self) -> None:
-        for pkg_dir in PACKAGE_DIRS:
-            pkg_info = PackageInfo.from_directory(
-                Path(self._root_dir) / "questionpy" / pkg_dir,
-                disable_build=True,
-            )
-            pkg = pkg_info.to_package()
+        for pkg_dir in DependencyMerger.PACKAGE_DIRS:
+            poetry = Factory().create_poetry(Path(self._root_dir) / "questionpy" / pkg_dir)
+            pkg = poetry.package.with_dependency_groups(DependencyMerger.GROUPS, only=True)
             for dep in pkg.all_requires:
                 if not dep.name.startswith("questionpy-"):
                     self._add(dep, pkg)
 
     @property
-    def deps(self) -> Iterable[Dependency]:
-        return (dep for dep, _ in self._deps)
+    def deps(self) -> list[Dependency]:
+        return sorted((dep for dep, _ in self._deps.values()), key=attrgetter("name"))
 
     def _add(self, dep: Dependency, pkg: Package) -> None:
-        with contextlib.suppress(StopIteration):
-            # check for dependency conflict
-            other_dep, other_pkg = next((d, p) for d, p in self._deps if d.name == dep.name)
-            if other_dep != dep:
-                msg = f"Conflicting dependencies detected:\n  {dep} [{pkg.name}]\n  {other_dep} [{other_pkg}]"
-                raise PackageConflictError(msg)
-            return  # identical dep -> fine!
-        self._deps.append((dep, pkg))
+        other_dep, other_pkg = None, None
+
+        # do we have this dep already?
+        with contextlib.suppress(KeyError):
+            other_dep, other_pkg = self._deps[dep.name]
+
+        # merge deps
+        if other_dep:
+            # version constraint
+            dep.constraint = dep.constraint.intersect(other_dep.constraint)
+
+            if dep.constraint.is_empty():
+                msg = (
+                    "Conflicting dependencies detected (no common versions):\n"
+                    f"  {dep} [{pkg.name}]\n"
+                    f"  {other_dep} [{other_pkg}]"
+                )
+                raise VersionConstraintError(msg)
+
+            # handle extras
+            dep = dep.with_features(dep.extras.union(other_dep.extras))
+
+        self._deps[dep.name] = dep, pkg
 
 
 manager = DependencyMerger(poe_root)
 
 
-def merge() -> None:
-    """Merge QuestionPy package dependencies and print as semicolon separated string."""
+def create_requirements() -> None:
+    """Merge QuestionPy package dependencies and save as requirements file."""
     try:
         manager.merge()
-        print(";".join(str(dep) for dep in manager.deps))
-    except PackageConflictError:
+        with open(poe_root / "requirements-dev.txt", "w", encoding="utf-8") as f:
+            for dep in manager.deps:
+                f.write(f"{dep}\n")
+    except VersionConstraintError:
         logger.exception("You need to resolve the conflicting requirement specifiers")
         sys.exit(-1)
 
@@ -79,7 +92,6 @@ def check() -> None:
         manager.merge()
         for dep in manager.deps:
             logger.info("%s", dep)
-        logger.info("=> Dependencies are sync'ed.")
-    except PackageConflictError:
+    except VersionConstraintError:
         logger.exception("You need to resolve the conflicting requirement specifiers")
         sys.exit(-1)

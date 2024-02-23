@@ -15,12 +15,6 @@ python = "^3.9"
 poethepoet = "^0.24.4"
 poetry = "^1.7.1"
 
-[tool.poetry.group.linter]
-dependencies = { ruff = "^0.2.2" }
-
-[tool.poetry.group.type-checker]
-dependencies = { mypy = "^1.1.1" }
-
 [tool.mypy]
 disallow_untyped_defs = true
 strict_optional = true
