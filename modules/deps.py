@@ -13,10 +13,12 @@ PACKAGE_DIRS = ("common", "sdk", "server")
 
 poe_root = os.environ.get("POE_ROOT")
 if poe_root is None:
-    raise ValueError("POE_ROOT is not set")
+    msg = "POE_ROOT is not set"
+    raise ValueError(msg)
 logging_level = os.environ.get("QPY_DEV_LOG_LEVEL")
 if logging_level is None:
-    raise ValueError("QPY_DEV_LOG_LEVEL is not set")
+    msg = "QPY_DEV_LOG_LEVEL is not set"
+    raise ValueError(msg)
 
 logging.basicConfig(level=logging_level)
 logger = logging.getLogger(__name__)
@@ -39,7 +41,7 @@ class DependencyMerger:
                 disable_build=True,
             )
             pkg = pkg_info.to_package()
-            for dep in pkg.requires:
+            for dep in pkg.all_requires:
                 if not dep.name.startswith("questionpy-"):
                     self._add(dep, pkg)
 
@@ -66,9 +68,8 @@ def merge() -> None:
     try:
         manager.merge()
         print(";".join(str(dep) for dep in manager.deps))
-    except PackageConflictError as exc:
-        logger.error(exc)
-        logger.error("You need to resolve the conflicting requirement specifiers")
+    except PackageConflictError:
+        logger.exception("You need to resolve the conflicting requirement specifiers")
         sys.exit(-1)
 
 
@@ -79,7 +80,6 @@ def check() -> None:
         for dep in manager.deps:
             logger.info("%s", dep)
         logger.info("=> Dependencies are sync'ed.")
-    except PackageConflictError as exc:
-        logger.error(exc)
-        logger.error("You need to resolve the conflicting requirement specifiers")
+    except PackageConflictError:
+        logger.exception("You need to resolve the conflicting requirement specifiers")
         sys.exit(-1)
