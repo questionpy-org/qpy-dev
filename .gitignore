@@ -9,6 +9,8 @@
 /.vscode
 *.iml
 __pycache__
+.mypy_cache
+.ruff_cache
 
 /questionpy
 /vendor
