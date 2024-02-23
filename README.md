@@ -51,14 +51,13 @@ $ echo 'alias poe="poetry run poe"' >> ~/.bash_profile
       - [x] Implement merger
       - [x] Check if repo deps are conflict-free
       - [ ] Consider all (optional) groups
+        - [ ] And remove them from qpy-dev `pyproject.toml`
       - [ ] Use `dict[dep.name, tuple[Dep, Pkg]]` for `DependencyMerger._deps`?
       - [ ] Use (version constraint) intersection of conflicting deps
         - Raise error if result is empty
       - [ ] Consider dep extras: use union of conflicting deps extras
       - (Idea: Choose one or the other interactively when a conflict occurs. Can also be done manually/is probably overkill.)
 - **Common developer tasks and workflows**
-  - [ ] linter/type-checker/tests
-    - [ ] tox config to run all all/some/single repository
   - [ ] common git tasks?
     - [ ] git clone
       - [x] all repos
@@ -82,17 +81,19 @@ $ echo 'alias poe="poetry run poe"' >> ~/.bash_profile
     - [x] Create `config.ini`
     - [x] Pass env vars
     - [x] Create cache directories
+  - Per repo tasks
+    - tox
+      - [ ] Run tox in parallel on all repos?
+      - [ ] Remove tox config from individual repos
+    - [ ] Sync `ruff_defaults.toml` into QPy repos
 - **Update tooling**
   - [ ] Add ruff (replacing Pylint, Flake8)
-    - [ ] Possible to have preset rules (like Eslint sharable config)?  
+    - Possible to have preset rules (like Eslint sharable config)?  
       - No, not yet. https://github.com/astral-sh/ruff/discussions/3363
         - [ ] Can be mimicked by using [`extend`](https://docs.astral.sh/ruff/settings/#extend)  
-          Solution: Have `ruff_defaults.toml` in `qpy-dev` and create command that sync's it into the QPy repos.
-        - Look at [hatch default config](https://hatch.pypa.io/latest/config/static-analysis/#default-settings)  
+          Solution: Have `ruff_defaults.toml` in `qpy-dev` and create command that sync's it into the QPy repos.  
+          Look at [hatch default config](https://hatch.pypa.io/latest/config/static-analysis/#default-settings)  
           https://github.com/pypa/hatch/blob/master/ruff_defaults.toml
-    - [ ] Add common ruleset to all 3 repos
-    - [ ] Add `ruff format --check` to tox
-    - [ ] Add `ruff format` task
   - [ ] Add https://github.com/commitizen-tools/commitizen?
   - [ ] Fix this bug and create PR: https://github.com/nat-n/poethepoet/issues/198
 
