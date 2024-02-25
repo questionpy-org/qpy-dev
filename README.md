@@ -46,8 +46,8 @@ $ echo 'alias poe="poetry run poe"' >> ~/.bash_profile
 
 ##### Moodle start/stop hooks
 
-Run an arbitrary shell command on Moodle start/shutdown. The examples adds an
-expception to the firewall, so Moodle can access the host QuestionPy server.
+Run an arbitrary shell command on Moodle start/shutdown. The examples add an
+exception to the firewall, so Moodle can access the host QuestionPy server.
 
 ```
 MOODLE_DOCKER_POST_START_HOOK="IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' qpy-dev-moodle-webserver-1); sudo iptables -A INPUT -s $IP/16 -j ACCEPT"
