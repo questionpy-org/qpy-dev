@@ -3,6 +3,7 @@
 [tool.poe.tasks."repos:clone"]
 help = "Clone all repositories."
 sequence = [
+  { cmd = 'echo -e "${COLOR_TASK}[repos:clone]${COLOR_OFF}"' },
   "_repos:clone:ensure-repos-qpy",
   "_repos:clone:ensure-repos-qpy-qtype",
   "_repos:clone:ensure-repos-moodle",

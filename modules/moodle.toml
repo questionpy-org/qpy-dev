@@ -10,12 +10,13 @@ deps = [
 ]
 default_item_type = "cmd"
 sequence = [
-  { ref = "_utils:hook MOODLE_DOCKER_PRE_START_HOOK 'Running Moodle pre-start hook...'" },
+  { cmd = 'echo -e "${COLOR_TASK}[moodle:start]${COLOR_OFF}"' },
+  { ref = "_utils:hook MOODLE_DOCKER_PRE_START_HOOK '${COLOR_TASK}[moodle:start] ${COLOR_MSG}Pre-start hook...${COLOR_OFF}'" },
   "./bin/moodle-docker-compose up -d",
-  "echo Waiting for DB...",
+  { cmd = 'echo -e "${COLOR_TASK}[moodle:start]${COLOR_MSG} Waiting for DB...${COLOR_OFF}"' },
   "./bin/moodle-docker-wait-for-db",
-  { ref = "_utils:hook MOODLE_DOCKER_POST_START_HOOK 'Running Moodle post-start hook...'" },
-  "echo Moodle running on http://localhost:${MOODLE_DOCKER_WEB_PORT}/",
+  { ref = "_utils:hook MOODLE_DOCKER_POST_START_HOOK '${COLOR_TASK}[moodle:start] ${COLOR_MSG}Post-start hook...${COLOR_OFF}'" },
+  { cmd = 'echo -e "${COLOR_TASK}[moodle:start]${COLOR_MSG} Moodle running on http://localhost:${MOODLE_DOCKER_WEB_PORT}/${COLOR_OFF}"' },
 ]
 
 [tool.poe.tasks."moodle:start".env]
@@ -32,9 +33,10 @@ deps = [
   "_utils:ensure-docker",
 ]
 sequence = [
-  { ref = "_utils:hook MOODLE_DOCKER_PRE_STOP_HOOK 'Running Moodle pre-stop hook...'" },
+  { cmd = 'echo -e "${COLOR_TASK}[moodle:stop]${COLOR_OFF}"' },
+  { ref = "_utils:hook MOODLE_DOCKER_PRE_STOP_HOOK '${COLOR_TASK}[moodle:stop] ${COLOR_MSG}Pre-stop hook...${COLOR_OFF}'" },
   { cmd = "./bin/moodle-docker-compose stop" },
-  { ref = "_utils:hook MOODLE_DOCKER_POST_STOP_HOOK 'Running Moodle post-stop hook...'" },
+  { ref = "_utils:hook MOODLE_DOCKER_POST_STOP_HOOK '${COLOR_TASK}[moodle:stop] ${COLOR_MSG}Post-stop hook...${COLOR_OFF}'" },
 ]
 
 [tool.poe.tasks."moodle:stop".env]
@@ -50,7 +52,11 @@ deps = [
   "_repos:clone:ensure-repos-moodle",
   "_utils:ensure-docker",
 ]
-cmd = "./bin/moodle-docker-compose rm --volumes"
+default_item_type = "cmd"
+sequence = [
+  'echo -e "${COLOR_TASK}[moodle:rm]${COLOR_OFF}"',
+  "./bin/moodle-docker-compose rm --volumes",
+]
 
 [tool.poe.tasks."moodle:rm".env]
 MOODLE_DOCKER_WWWROOT = "${POE_ROOT}/vendor/moodle"
@@ -65,7 +71,11 @@ deps = [
   "_repos:clone:ensure-repos-moodle",
   "_utils:ensure-docker",
 ]
-cmd = "./bin/moodle-docker-compose logs --follow --tail=100 webserver"
+default_item_type = "cmd"
+sequence = [
+  'echo -e "${COLOR_TASK}[moodle:logs]${COLOR_OFF}"',
+  "./bin/moodle-docker-compose logs --follow --tail=100 webserver",
+]
 
 [tool.poe.tasks."moodle:logs".env]
 MOODLE_DOCKER_WWWROOT = "${POE_ROOT}/vendor/moodle"

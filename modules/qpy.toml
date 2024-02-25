@@ -2,27 +2,18 @@
 
 [tool.poe.tasks."qpy:serve"]
 help = "Run QPy dev server."
-cwd = "./questionpy/server"
-cmd = "python -m questionpy_server"
-use_exec = true
-deps = [
-  "_repos:clone:ensure-repos-qpy",
-  "_qpy:ensure-config",
-  "_qpy:ensure-cache-dir",
+sequence = [
+  { cmd = 'echo -e "${COLOR_TASK}[qpy:serve]${COLOR_OFF}"' },
+  "_qpy:serve",
 ]
 
 ### qpy:watch
 
 [tool.poe.tasks."qpy:watch"]
 help = "Run QPy dev server (watch mode)."
-cwd = "./questionpy/server"
-# TODO
-cmd = "echo watchmedo auto-restart --pattern *.py --recursive --signal SIGTERM  python app.py"
-use_exec = true
-deps = [
-  "_repos:clone:ensure-repos-qpy",
-  "_qpy:ensure-config",
-  "_qpy:ensure-cache-dir",
+sequence = [
+  { cmd = 'echo -e "${COLOR_TASK}[qpy:watch]${COLOR_OFF}"' },
+  "_qpy:watch",
 ]
 
 ### private tasks
@@ -38,3 +29,22 @@ shell = """
 [tool.poe.tasks."_qpy:ensure-cache-dir"]
 cwd = "./questionpy/server"
 cmd = "mkdir -p cache/packages cache/repo_index"
+
+[tool.poe.tasks."_qpy:serve"]
+cwd = "./questionpy/server"
+cmd = "python -m questionpy_server"
+deps = [
+  "_repos:clone:ensure-repos-qpy",
+  "_qpy:ensure-config",
+  "_qpy:ensure-cache-dir",
+]
+
+[tool.poe.tasks."_qpy:watch"]
+cwd = "./questionpy/server"
+# TODO
+cmd = "echo watchmedo auto-restart --pattern *.py --recursive --signal SIGTERM  python app.py"
+deps = [
+  "_repos:clone:ensure-repos-qpy",
+  "_qpy:ensure-config",
+  "_qpy:ensure-cache-dir",
+]

@@ -1,7 +1,7 @@
 [tool.poe.tasks."_utils:ensure-docker"]
 shell = """
   if ! $(docker info >/dev/null 2>&1); then
-    echo 'Docker daemon is not running!'
+    echo -e "${COLOR_ERR}Docker daemon is not running!${COLOR_OFF}"
     exit 1
   fi
 """
@@ -23,7 +23,7 @@ args = [
 [tool.poe.tasks."_utils:hook"]
 shell = """
   if [[ -n "${!name}" ]]; then
-    echo "${msg}"
+    echo -e "${msg}${COLOR_OFF}"
     eval "${!name}"
   fi
 """

@@ -44,6 +44,7 @@ include = [
 [tool.poe.env]
 COLOR_TASK = '\033[0;34m'
 COLOR_MSG = '\033[1;37m'
+COLOR_ERR = '\033[1;31m'
 COLOR_OFF = '\033[0m'
 # FIXME: set moodle-docker env vars globally once bug is resolved
 # https://github.com/nat-n/poethepoet/issues/198
