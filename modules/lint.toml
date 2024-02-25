@@ -5,7 +5,7 @@ help = "Run Ruff linter."
 deps = ["_repos:clone:ensure-repos-qpy"]
 shell = '''
   for repo in $_repos; do
-    echo -e "${COLOR_TASK}[lint] ${COLOR_MSG}./questionpy/$repo${COLOR_OFF}"
+    echo -e "${COLOR_TASK}[lint] ${COLOR_REPO}(${repo})${COLOR_OFF}"
     ruff check --config ./questionpy/$repo/pyproject.toml ./questionpy/$repo
   done
 '''

@@ -7,7 +7,7 @@ shell = '''
   check_flag=""
   [ "$check" = "True" ] && check_flag="--check"
   for repo in $_repos; do
-    echo -e "${COLOR_TASK}[fmt] ${COLOR_MSG}./questionpy/$repo${COLOR_OFF}"
+    echo -e "${COLOR_TASK}[fmt] ${COLOR_REPO}(${repo})${COLOR_OFF}"
     ruff format --config ./questionpy/$repo/pyproject.toml ${check_flag} ./questionpy/$repo
   done
 '''

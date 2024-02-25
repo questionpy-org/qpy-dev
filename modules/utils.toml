@@ -1,7 +1,7 @@
 [tool.poe.tasks."_utils:ensure-docker"]
 shell = """
   if ! $(docker info >/dev/null 2>&1); then
-    echo -e "${COLOR_ERR}Docker daemon is not running!${COLOR_OFF}"
+    echo -e "${COLOR_WARN}Docker daemon is not running!${COLOR_OFF}"
     exit 1
   fi
 """
