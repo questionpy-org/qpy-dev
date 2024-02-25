@@ -134,6 +134,7 @@ MOODLE_DOCKER_PRE_STOP_HOOK="IP=$(docker inspect -f '{{range.NetworkSettings.Net
   - [ ] Add https://github.com/commitizen-tools/commitizen?
   - [ ] Fix this bug and create PR: https://github.com/nat-n/poethepoet/issues/198
   - [ ] Remove tox config from individual repos
+  - [ ] Update GH actions
 
 ### Non-Goal
 
