@@ -1,0 +1,29 @@
+### venv:install
+
+[tool.poe.tasks."venv:install"]
+help = "Install QPy packages and dependencies in dev env."
+default_item_type = "cmd"
+deps = [
+  "_repos:clone:ensure-repos-qpy",
+  "_venv:create-requirements-dev",
+]
+sequence = [
+  "pip install --no-input --disable-pip-version-check --requirement requirements-dev.txt",
+  "poetry run pip install --no-input --disable-pip-version-check --no-deps --editable questionpy/common",
+  "poetry run pip install --no-input --disable-pip-version-check --no-deps --editable questionpy/sdk",
+  "poetry run pip install --no-input --disable-pip-version-check --no-deps --editable questionpy/server",
+]
+
+### venv:check
+
+[tool.poe.tasks."venv:check"]
+help = "Check and print calculated list of dev env dependencies."
+deps = ["_repos:clone:ensure-repos-qpy"]
+env = { "PYTHONPATH" = "./modules" }
+script = "deps:check"
+
+### private tasks
+
+[tool.poe.tasks."_venv:create-requirements-dev"]
+env = { "PYTHONPATH" = "./modules" }
+script = "deps:create_requirements"

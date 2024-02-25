@@ -25,30 +25,6 @@ deps = [
   "_qpy:ensure-cache-dir",
 ]
 
-### qpy:install
-
-[tool.poe.tasks."qpy:install"]
-help = "Install QPy packages and dependencies in dev env."
-default_item_type = "cmd"
-deps = [
-  "_repos:clone:ensure-repos-qpy",
-  "_qpy:create-requirements-dev",
-]
-sequence = [
-  "pip install --no-input --disable-pip-version-check --requirement requirements-dev.txt",
-  "poetry run pip install --no-input --disable-pip-version-check --no-deps --editable questionpy/common",
-  "poetry run pip install --no-input --disable-pip-version-check --no-deps --editable questionpy/sdk",
-  "poetry run pip install --no-input --disable-pip-version-check --no-deps --editable questionpy/server",
-]
-
-### qpy:check-deps
-
-[tool.poe.tasks."qpy:check-deps"]
-help = "Check if QPy package dependencies are in sync."
-deps = ["_repos:clone:ensure-repos-qpy"]
-env = { "PYTHONPATH" = "./modules" }
-script = "deps:check"
-
 ### private tasks
 
 [tool.poe.tasks."_qpy:ensure-config"]
@@ -62,7 +38,3 @@ shell = """
 [tool.poe.tasks."_qpy:ensure-cache-dir"]
 cwd = "./questionpy/server"
 cmd = "mkdir -p cache/packages cache/repo_index"
-
-[tool.poe.tasks."_qpy:create-requirements-dev"]
-env = { "PYTHONPATH" = "./modules" }
-script = "deps:create_requirements"
