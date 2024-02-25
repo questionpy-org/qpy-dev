@@ -86,10 +86,10 @@ MOODLE_DOCKER_PRE_STOP_HOOK="IP=$(docker inspect -f '{{range.NetworkSettings.Net
       - [x] Add `host.docker.internal` to webserver container `/etc/hosts` so QPy server can be specified by using a fixed hostname in Moodle
       - [x] `qtype-questionpy` as bind volume into the webserver container
     - [x] Start/stop hooks (mainly need this for creating/removing a Firewall rule to allow the Moodle webserver container to access the QPy server on my host)
-  - [ ] Handle QPy server
-    - [ ] Tasks
+  - [x] QPy server
+    - [x] Tasks
       - [x] start dev server
-      - [ ] watch dev server
+      - [x] watch dev server
     - [x] Create `config.ini`
     - [x] Pass env vars
     - [x] Create cache directories
