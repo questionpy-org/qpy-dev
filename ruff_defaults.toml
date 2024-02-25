@@ -77,6 +77,10 @@ ignore = [
   "D103",     #   function
   "D104",     #   package
   "D107",     #   __init__
+
+  # conflicting with formatter
+  "COM812",
+  "ISC001",
 ]
 
 pydocstyle = { convention = "google" }
