@@ -11,7 +11,6 @@ sequence = [
 ### private tasks
 
 [tool.poe.tasks."_repos:clone:ensure-repos-qpy"]
-default_item_type = "ref"
 sequence = [
   "_utils:git-clone $REPO_QUESTIONPY_COMMON       ./questionpy/common",
   "_utils:git-clone $REPO_QUESTIONPY_DOCS         ./questionpy/docs",
@@ -23,7 +22,6 @@ sequence = [
 ref = "_utils:git-clone $REPO_MOODLE_QTYPE_QUESTIONPY ./questionpy/moodle-qtype"
 
 [tool.poe.tasks."_repos:clone:ensure-repos-moodle"]
-default_item_type = "ref"
 sequence = [
   "_utils:git-clone $REPO_MOODLE                  ./vendor/moodle             --branch $REPO_MOODLE_TAG",
   "_utils:git-clone $REPO_MOODLE_DOCKER           ./vendor/moodle-docker      --branch main",
