@@ -1,0 +1,19 @@
+### test
+
+[tool.poe.tasks.test]
+help = "Run pytest."
+deps = ["_repos:clone:ensure-repos-qpy"]
+shell = '''
+  for repo in $_repos; do
+    echo -e "${COLOR_TASK}[test] ${COLOR_MSG}./questionpy/$repo${COLOR_OFF}"
+    pytest --rootdir=./questionpy/$repo ./questionpy/$repo
+  done
+'''
+uses = { _repos = "_utils:parse-repos $repos" }
+
+  [[tool.poe.tasks.test.args]]
+  name = "repos"
+  positional = true
+  multiple = true
+  help = "List of repositories to test (common, sdk, server or all)."
+  default = "all"

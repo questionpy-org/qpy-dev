@@ -94,11 +94,11 @@ MOODLE_DOCKER_PRE_STOP_HOOK="IP=$(docker inspect -f '{{range.NetworkSettings.Net
     - [x] Pass env vars
     - [x] Create cache directories
   - Per repo tasks
-    - [ ] All some/repos
+    - [x] All some/repos
       - [x] Lint
       - [x] Format (check)
       - [x] Type-check
-      - [ ] Test
+      - [x] Test
     - tox (various versions)
       - [ ] Run tox in parallel on all repos?
       - [ ] Remove tox config from individual repos

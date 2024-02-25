@@ -36,6 +36,7 @@ include = [
   "./modules/lint.toml",
   "./modules/fmt.toml",
   "./modules/typecheck.toml",
+  "./modules/test.toml",
   "./modules/repos.toml",
   "./modules/venv.toml",
   "./modules/moodle.toml",
