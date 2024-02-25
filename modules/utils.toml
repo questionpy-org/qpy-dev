@@ -19,3 +19,15 @@ args = [
   { "name" = "dir",    positional = true, required = true },
   { "name" = "branch", default = "dev" },
 ]
+
+[tool.poe.tasks."_utils:hook"]
+shell = """
+  if [[ -n "${!name}" ]]; then
+    echo "${msg}"
+    eval "${!name}"
+  fi
+"""
+args = [
+  { "name" = "name", positional = true, required = true },
+  { "name" = "msg",  positional = true, required = true },
+]

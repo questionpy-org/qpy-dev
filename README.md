@@ -34,12 +34,24 @@ $ cp .env .env.local
 
 Edit `.env.local` to your liking.
 
-#### Persistent `poe` Alias
+#### Tips
 
-Add `poe` alias to your login shell.
+##### Persistent `poe` Alias
+
+Add `poe` as an alias to your login shell.
 
 ```sh
 $ echo 'alias poe="poetry run poe"' >> ~/.bash_profile
+```
+
+##### Moodle start/stop hooks
+
+Run an arbitrary shell command on Moodle start/shutdown. The examples adds an
+expception to the firewall, so Moodle can access the host QuestionPy server.
+
+```
+MOODLE_DOCKER_POST_START_HOOK="IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' qpy-dev-moodle-webserver-1); sudo iptables -A INPUT -s $IP/16 -j ACCEPT"
+MOODLE_DOCKER_PRE_STOP_HOOK="IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' qpy-dev-moodle-webserver-1); sudo iptables -D INPUT -s $IP/16 -j ACCEPT"
 ```
 
 ### Todos
@@ -73,7 +85,7 @@ $ echo 'alias poe="poetry run poe"' >> ~/.bash_profile
     - [x] Automate config (`local.yml`)
       - [x] Add `host.docker.internal` to webserver container `/etc/hosts` so QPy server can be specified by using a fixed hostname in Moodle
       - [x] `qtype-questionpy` as bind volume into the webserver container
-    - [ ] Start/stop hooks (mainly need this for creating/removing a Firewall rule to allow the Moodle webserver container to access the QPy server on my host)
+    - [x] Start/stop hooks (mainly need this for creating/removing a Firewall rule to allow the Moodle webserver container to access the QPy server on my host)
   - [ ] Handle QPy server
     - [ ] Tasks
       - [x] start dev server

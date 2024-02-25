@@ -10,10 +10,11 @@ deps = [
 ]
 default_item_type = "cmd"
 sequence = [
+  { ref = "_utils:hook MOODLE_DOCKER_PRE_START_HOOK 'Running Moodle pre-start hook...'" },
   "./bin/moodle-docker-compose up -d",
   "echo Waiting for DB...",
   "./bin/moodle-docker-wait-for-db",
-  { ref = "_moodle:post-start-hook" },
+  { ref = "_utils:hook MOODLE_DOCKER_POST_START_HOOK 'Running Moodle post-start hook...'" },
   "echo Moodle running on http://localhost:${MOODLE_DOCKER_WEB_PORT}/",
 ]
 
@@ -30,7 +31,11 @@ deps = [
   "_repos:clone:ensure-repos-moodle",
   "_utils:ensure-docker",
 ]
-cmd = "./bin/moodle-docker-compose stop"
+sequence = [
+  { ref = "_utils:hook MOODLE_DOCKER_PRE_STOP_HOOK 'Running Moodle pre-stop hook...'" },
+  { cmd = "./bin/moodle-docker-compose stop" },
+  { ref = "_utils:hook MOODLE_DOCKER_POST_STOP_HOOK 'Running Moodle post-stop hook...'" },
+]
 
 [tool.poe.tasks."moodle:stop".env]
 MOODLE_DOCKER_WWWROOT = "${POE_ROOT}/vendor/moodle"
@@ -45,7 +50,7 @@ deps = [
   "_repos:clone:ensure-repos-moodle",
   "_utils:ensure-docker",
 ]
-cmd = "./bin/moodle-docker-compose rm --stop --volumes"
+cmd = "./bin/moodle-docker-compose rm --volumes"
 
 [tool.poe.tasks."moodle:rm".env]
 MOODLE_DOCKER_WWWROOT = "${POE_ROOT}/vendor/moodle"
@@ -99,14 +104,4 @@ shell = """
         - "host.docker.internal:host-gateway"
       volumes:
         - "${POE_ROOT}/questionpy/moodle-qtype:/var/www/html/question/type/questionpy"' > local.yml
-"""
-
-[tool.poe.tasks."_moodle:post-start-hook"]
-# TODO: fix this
-shell = """
-  echo Running post hook...
-  if [[ -z "${MOODLE_DOCKER_POST_START_HOOK}" ]]; then
-    echo Running post hook: ${MOODLE_DOCKER_POST_START_HOOK}
-    ${MOODLE_DOCKER_POST_START_HOOK}
-  fi
 """
