@@ -82,10 +82,17 @@ $ echo 'alias poe="poetry run poe"' >> ~/.bash_profile
     - [x] Pass env vars
     - [x] Create cache directories
   - Per repo tasks
-    - tox
+    - [ ] All some/repos
+      - [ ] Lint
+      - [ ] Format (check)
+      - [ ] Type-check
+      - [ ] Test
+    - tox (various versions)
       - [ ] Run tox in parallel on all repos?
       - [ ] Remove tox config from individual repos
-    - [ ] Sync `ruff_defaults.toml` into QPy repos
+    - [ ] Sync tooling config into QPy repos
+      - [ ] `ruff_defaults.toml`
+      - [ ] Use tomlkit to sync mypy, pytest, coverage
 - **Update tooling**
   - [ ] Add ruff (replacing Pylint, Flake8)
     - Possible to have preset rules (like Eslint sharable config)?  
