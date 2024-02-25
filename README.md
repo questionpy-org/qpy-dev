@@ -95,9 +95,9 @@ MOODLE_DOCKER_PRE_STOP_HOOK="IP=$(docker inspect -f '{{range.NetworkSettings.Net
     - [x] Create cache directories
   - Per repo tasks
     - [ ] All some/repos
-      - [ ] Lint
-      - [ ] Format (check)
-      - [ ] Type-check
+      - [x] Lint
+      - [x] Format (check)
+      - [x] Type-check
       - [ ] Test
     - tox (various versions)
       - [ ] Run tox in parallel on all repos?

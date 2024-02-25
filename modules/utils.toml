@@ -31,3 +31,13 @@ args = [
   { "name" = "name", positional = true, required = true },
   { "name" = "msg",  positional = true, required = true },
 ]
+
+[tool.poe.tasks."_utils:parse-repos"]
+expr = '''(
+  "common sdk server"
+  if repos == ["all"]
+  else " ".join(sorted(set(repos)))
+    if all(item in ["common", "sdk", "server"]
+    for item in repos) else ""
+)'''
+args = [{ name = "repos", positional = true, multiple = true }]

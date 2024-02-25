@@ -33,14 +33,20 @@ envfile = [
 include = [
   "./modules/utils.toml",
   "./modules/qpy.toml",
+  "./modules/lint.toml",
+  "./modules/fmt.toml",
+  "./modules/typecheck.toml",
   "./modules/repos.toml",
   "./modules/venv.toml",
   "./modules/moodle.toml",
 ]
 
+[tool.poe.env]
+COLOR_TASK = '\033[0;34m'
+COLOR_MSG = '\033[1;37m'
+COLOR_OFF = '\033[0m'
 # FIXME: set moodle-docker env vars globally once bug is resolved
 # https://github.com/nat-n/poethepoet/issues/198
-# [tool.poe.env]
 # MOODLE_DOCKER_WWWROOT = "${POE_ROOT}/vendor/moodle"
 # COMPOSE_PROJECT_NAME= "${MOODLE_DOCKER_COMPOSE_PROJECT_NAME}"
 

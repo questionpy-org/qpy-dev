@@ -1,0 +1,19 @@
+### typecheck
+
+[tool.poe.tasks.typecheck]
+help = "Run mypy type checker."
+deps = ["_repos:clone:ensure-repos-qpy"]
+uses = { _repos = "_utils:parse-repos $repos" }
+shell = '''
+  for repo in $_repos; do
+    echo -e "${COLOR_TASK}[typecheck] ${COLOR_MSG}./questionpy/$repo${COLOR_OFF}"
+    mypy --config-file ./questionpy/$repo/pyproject.toml ./questionpy/$repo
+  done
+'''
+
+  [[tool.poe.tasks.typecheck.args]]
+  name = "repos"
+  positional = true
+  multiple = true
+  help = "List of repositories to type-check (common, sdk, server or all)."
+  default = "all"

@@ -1,0 +1,27 @@
+### fmt
+
+[tool.poe.tasks.fmt]
+help = "Run Ruff formatter."
+deps = ["_repos:clone:ensure-repos-qpy"]
+shell = '''
+  check_flag=""
+  [ "$check" = "True" ] && check_flag="--check"
+  for repo in $_repos; do
+    echo -e "${COLOR_TASK}[fmt] ${COLOR_MSG}./questionpy/$repo${COLOR_OFF}"
+    ruff format --config ./questionpy/$repo/pyproject.toml ${check_flag} ./questionpy/$repo
+  done
+'''
+uses = { _repos = "_utils:parse-repos $repos" }
+
+  [[tool.poe.tasks.fmt.args]]
+  name = "repos"
+  positional = true
+  multiple = true
+  help = "List of repositories to format (common, sdk, server or all)."
+  default = "all"
+
+  [[tool.poe.tasks.fmt.args]]
+  name = "check"
+  help = "Don't write any formatted files back."
+  type = "boolean"
+  default = false
