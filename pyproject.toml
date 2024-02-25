@@ -32,10 +32,10 @@ envfile = [
 ]
 include = [
   "./modules/utils.toml",
-  "./modules/repos.toml",
-  "./modules/moodle.toml",
   "./modules/qpy.toml",
+  "./modules/repos.toml",
   "./modules/venv.toml",
+  "./modules/moodle.toml",
 ]
 
 # FIXME: set moodle-docker env vars globally once bug is resolved
