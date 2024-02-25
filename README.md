@@ -70,11 +70,6 @@ MOODLE_DOCKER_PRE_STOP_HOOK="IP=$(docker inspect -f '{{range.NetworkSettings.Net
       - [x] Consider dep extras: use union of conflicting deps extras
       - (Idea: Choose one or the other interactively when a conflict occurs. Can also be done manually/is probably overkill.)
 - **Common developer tasks and workflows**
-  - [ ] common git tasks?
-    - [ ] git clone
-      - [x] all repos
-      - [ ] some repos, single repo
-    - [ ] git pull
   - [x] Manage Moodle dev stack
     - [x] Tasks
       - [x] start
@@ -99,6 +94,11 @@ MOODLE_DOCKER_PRE_STOP_HOOK="IP=$(docker inspect -f '{{range.NetworkSettings.Net
       - [x] Format (check)
       - [x] Type-check
       - [x] Test
+    - [ ] git tasks
+      - [ ] git clone
+        - [x] all repos
+        - [ ] some repos, single repo
+      - [ ] git pull/fetch (to see if there have been pushes)
     - tox (various versions)
       - [ ] Run tox in parallel on all repos?
       - [ ] Remove tox config from individual repos
