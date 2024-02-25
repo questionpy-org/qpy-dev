@@ -1,0 +1,12 @@
+### tox
+
+[tool.poe.tasks.tox]
+help = "Run tox."
+deps = ["_repos:clone:ensure-repos-qpy"]
+cmd = "tox"
+
+  [[tool.poe.tasks.lint.args]]
+  name = "envs"
+  positional = true
+  help = "List of tox envs to run."
+  default = ""

@@ -44,6 +44,14 @@ Add `poe` as an alias to your login shell.
 $ echo 'alias poe="poetry run poe"' >> ~/.bash_profile
 ```
 
+##### Run `tox` in parallel
+
+Run all tox tasks in parallel.
+
+```sh
+$ poe tox -p
+```
+
 ##### Moodle start/stop hooks
 
 Run an arbitrary shell command on Moodle start/shutdown. The examples add an
@@ -99,9 +107,7 @@ MOODLE_DOCKER_PRE_STOP_HOOK="IP=$(docker inspect -f '{{range.NetworkSettings.Net
         - [x] all repos
         - [ ] some repos, single repo
       - [ ] git pull/fetch (to see if there have been pushes)
-    - tox (various versions)
-      - [ ] Run tox in parallel on all repos?
-      - [ ] Remove tox config from individual repos
+    - [x] tox task
     - [ ] Sync tooling config into QPy repos
       - [ ] `ruff_defaults.toml`
       - [ ] Use tomlkit to sync mypy, pytest, coverage
@@ -115,6 +121,7 @@ MOODLE_DOCKER_PRE_STOP_HOOK="IP=$(docker inspect -f '{{range.NetworkSettings.Net
           https://github.com/pypa/hatch/blob/master/ruff_defaults.toml
   - [ ] Add https://github.com/commitizen-tools/commitizen?
   - [ ] Fix this bug and create PR: https://github.com/nat-n/poethepoet/issues/198
+  - [ ] Remove tox config from individual repos
 
 ### Non-Goal
 

@@ -15,6 +15,7 @@ python = "^3.9"
 poethepoet = "^0.24.4"
 poetry = "^1.7.1"
 watchdog = {version = "^4.0.0", extras = ["watchmedo"]}
+tox = "^4.13.0"
 
 [tool.mypy]
 disallow_untyped_defs = true
@@ -38,6 +39,7 @@ include = [
   "./modules/fmt.toml",
   "./modules/typecheck.toml",
   "./modules/test.toml",
+  "./modules/tox.toml",
   "./modules/repos.toml",
   "./modules/venv.toml",
   "./modules/moodle.toml",
@@ -65,3 +67,36 @@ extend = "ruff_defaults.toml"
   "INP001",
   "T201",
 ]
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+env_list =
+  py{39,310,311}-{common,sdk,server}-test
+  {common,sdk,server}-{format,lint}
+  {common,sdk,server}-typecheck
+
+minversion = 4.13.0
+
+[testenv]
+allowlist_externals = poetry
+skip_install = true
+change_dir =
+  common: questionpy/common
+  sdk: questionpy/sdk
+  server: questionpy/server
+
+[testenv:py{39,310,311}-{common,sdk,server}-test]
+commands_pre = poetry install --no-root --only main,test
+commands = coverage run -m pytest {tty:--color=yes} tests {posargs}
+
+[testenv:{common,sdk,server}-{format,lint}]
+commands_pre = poetry install --no-root --only linter
+commands =
+  ruff-format: ruff format --check {posargs:.}
+  ruff-lint: ruff check {posargs:.}
+
+[testenv:{common,sdk,server}-typecheck]
+commands_pre = poetry install --no-root --only main,test,type-checker
+commands = mypy {posargs:questionpy_common tests}
+"""
