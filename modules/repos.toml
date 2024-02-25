@@ -4,6 +4,7 @@
 help = "Clone all repositories."
 sequence = [
   "_repos:clone:ensure-repos-qpy",
+  "_repos:clone:ensure-repos-qpy-qtype",
   "_repos:clone:ensure-repos-moodle",
 ]
 
@@ -16,7 +17,6 @@ sequence = [
   "_utils:git-clone $REPO_QUESTIONPY_DOCS         ./questionpy/docs",
   "_utils:git-clone $REPO_QUESTIONPY_SDK          ./questionpy/sdk",
   "_utils:git-clone $REPO_QUESTIONPY_SERVER       ./questionpy/server",
-  "_repos:clone:ensure-repos-qpy-qtype",
 ]
 
 [tool.poe.tasks."_repos:clone:ensure-repos-qpy-qtype"]
