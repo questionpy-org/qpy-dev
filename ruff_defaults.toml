@@ -107,9 +107,9 @@ ban-relative-imports = "all"
 
 [lint.isort]
 known-first-party = [
-  "questionpy-common",
-  "questionpy-sdk",
-  "questionpy-server",
+  "questionpy_common",
+  "questionpy_sdk",
+  "questionpy_server",
 ]
 
 [lint.mccabe]
