@@ -3,6 +3,8 @@
 ### Requirements
 
 - [Poetry](https://python-poetry.org/docs/#installation)
+- [Docker](https://docs.docker.com/engine/install/) (for running Moodle)
+- [pyenv](https://github.com/pyenv/pyenv/blob/master/README.md#installation) (for installing multiple Python versions)
 
 ### Quick Start
 
@@ -44,7 +46,13 @@ Add `poe` as an alias to your login shell.
 $ echo 'alias poe="poetry run poe"' >> ~/.bash_profile
 ```
 
-##### Run `tox` in parallel
+##### Running `tox`
+
+Make sure you install all required Python versions we test against. (Using pyenv is not strictly necessary, but the easiest option. You can also install different Python versions using your distro's package manager or other means.)
+
+```
+$ pyenv install 3.9 3.10 3.11
+```
 
 Run all tox tasks in parallel.
 
