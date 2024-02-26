@@ -6,6 +6,7 @@ cwd = "./vendor/moodle-docker"
 deps = [
   "_repos:clone:ensure-repos-moodle",
   "_moodle:add-local-yml",
+  "_moodle:ensure-moodle-config",
   "_utils:ensure-docker",
 ]
 default_item_type = "cmd"
@@ -114,4 +115,10 @@ shell = """
         - "host.docker.internal:host-gateway"
       volumes:
         - "${POE_ROOT}/questionpy/moodle-qtype:/var/www/html/question/type/questionpy"' > local.yml
+"""
+
+[tool.poe.tasks."_moodle:ensure-moodle-config"]
+shell = """
+  [[ -f vendor/moodle/config.php ]] && exit 0
+  cp vendor/moodle-docker/config.docker-template.php vendor/moodle/config.php
 """
