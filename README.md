@@ -123,6 +123,10 @@ MOODLE_DOCKER_PRE_STOP_HOOK="IP=$(docker inspect -f '{{range.NetworkSettings.Net
           - check `extend = "ruff_defaults.toml"` option is present
           - check that `extend-*` variants are used
         - [ ] check no `tool.pylint*` are present
+  - Docs
+    - [ ] Build docs using mkdocs
+    - [ ] Open docs in browser
+    - [ ] Publish docs
 - **Update tooling**
   - [ ] Add ruff (replacing Pylint, Flake8)
     - Possible to have preset rules (like Eslint sharable config)?  
