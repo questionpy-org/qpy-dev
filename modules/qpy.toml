@@ -3,7 +3,7 @@
 [tool.poe.tasks."qpy:serve"]
 help = "Run QPy dev server."
 sequence = [
-  { cmd = 'echo -e "${COLOR_TASK}[qpy:serve]${COLOR_OFF}"' },
+  "_qpy:serve-msg qpy:serve",
   "_qpy:serve",
 ]
 
@@ -12,7 +12,7 @@ sequence = [
 [tool.poe.tasks."qpy:watch"]
 help = "Run QPy dev server (watch mode)."
 sequence = [
-  { cmd = 'echo -e "${COLOR_TASK}[qpy:watch]${COLOR_OFF}"' },
+  "_qpy:serve-msg qpy:watch",
   "_qpy:watch",
 ]
 
@@ -47,3 +47,10 @@ deps = [
   "_qpy:ensure-config",
   "_qpy:ensure-cache-dir",
 ]
+
+[tool.poe.tasks."_qpy:serve-msg"]
+default_item_type = "cmd"
+sequence = [
+  'echo -e "${COLOR_TASK}[${task_name}] ${COLOR_MSG}Starting QuestionPy server on http://${QPY_WEBSERVICE__LISTEN_ADDRESS}:${QPY_WEBSERVICE__PORT}. Use http://host.docker.internal:${QPY_WEBSERVICE__PORT} as URL in the QuestionPy Moodle settings.${COLOR_OFF}"',
+]
+args = [{ name = "task_name", positional = true, required = true }]
