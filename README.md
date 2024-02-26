@@ -48,7 +48,8 @@ $ echo 'alias poe="poetry run poe"' >> ~/.bash_profile
 
 ##### Running `tox`
 
-Make sure you install all required Python versions we test against. (Using pyenv is not strictly necessary, but the easiest option. You can also install different Python versions using your distro's package manager or other means.)
+Install all required Python versions for testing. Pyenv is easiest, but other
+methods work too.
 
 ```
 $ pyenv install 3.9 3.10 3.11
@@ -121,6 +122,8 @@ MOODLE_DOCKER_PRE_STOP_HOOK="IP=$(docker inspect -f '{{range.NetworkSettings.Net
         - [ ] some repos, single repo
       - [ ] git pull/fetch (to see if there have been pushes)
     - [x] tox task
+      - [x] make sure dev repos are used in tox
+      - [x] add pyenv to requirements/add pyenv instructions
     - [ ] Sync tooling config into QPy repos
       - [x] `ruff_defaults.toml`
       - [ ] Use tomlkit to sync tooling config (`pyproject.toml`)
