@@ -111,14 +111,14 @@ MOODLE_DOCKER_PRE_STOP_HOOK="IP=$(docker inspect -f '{{range.NetworkSettings.Net
     - [ ] Sync tooling config into QPy repos
       - [x] `ruff_defaults.toml`
       - [ ] Use tomlkit to sync tooling config (`pyproject.toml`)
-        - [ ] dependencies: check pylint, flake8, tox is not present
-        - [ ] check `tool.tox` is not presence
+        - [x] dependencies: check pylint, flake8, tox is not present
+        - [x] check `tool.tox` is not presence
         - [ ] mypy, check keys/values from qpy-dev config are present and match
         - [ ] `tool.pytest.ini_options`
           - `asyncio_mode = "auto"`, ignore others
-          - `tool.coverage.run`
-            - `branch = true`
-            - `source = [MODULE_NAME]`
+        - `tool.coverage.run`
+          - `branch = true`
+          - `source = [MODULE_NAME]`
         - [ ] ruff
           - check `extend = "ruff_defaults.toml"` option is present
           - check that `extend-*` variants are used

@@ -16,13 +16,15 @@ poethepoet = "^0.24.4"
 poetry = "^1.7.1"
 watchdog = {version = "^4.0.0", extras = ["watchmedo"]}
 tox = "^4.13.0"
+tomlkit = "^0.12.3"
 
 [tool.mypy]
 disallow_untyped_defs = true
 strict_optional = true
 show_error_codes = true
+# need this for typechecking ./modules/*, otherwise
+# mypy complains about duplicate module named "tests"
 exclude = [
-  # mypy complains about Duplicate module named "tests"
   "^questionpy/.+\\.py$",
 ]
 
