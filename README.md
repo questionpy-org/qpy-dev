@@ -87,6 +87,7 @@ MOODLE_DOCKER_PRE_STOP_HOOK="IP=$(docker inspect -f '{{range.NetworkSettings.Net
       - [x] Consider dep extras: use union of conflicting deps extras
       - (Idea: Choose one or the other interactively when a conflict occurs. Can also be done manually/is probably overkill.)
 - **Common developer tasks and workflows**
+  - post-checkout hook that set ups venv automatically?
   - [x] Manage Moodle dev stack
     - [x] Tasks
       - [x] start
@@ -155,6 +156,9 @@ MOODLE_DOCKER_PRE_STOP_HOOK="IP=$(docker inspect -f '{{range.NetworkSettings.Net
   - [ ] Fix this bug and create PR: https://github.com/nat-n/poethepoet/issues/198
   - [ ] Remove tox config from individual repos
   - [ ] Update GH actions
+  - [ ] pre-commit-hook
+    - lint/test/...
+    - lint conventional commit messages
 
 ### Non-Goal
 
