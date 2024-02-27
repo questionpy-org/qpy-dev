@@ -106,10 +106,15 @@ MOODLE_DOCKER_PRE_STOP_HOOK="IP=$(docker inspect -f '{{range.NetworkSettings.Net
     - [x] Create cache directories
   - Per repo tasks
     - [x] All some/repos
-      - [x] Lint
+      - [ ] Lint
+        - [x] ruff
+        - [ ] PHP_CodeSniffer (https://docs.moodle.org/dev/Linting)
       - [x] Format (check)
       - [x] Type-check
-      - [x] Test
+      - [ ] Test
+        - [x] pytest
+        - [ ] coverage/report
+        - [ ] phpunit (https://moodledev.io/general/development/process/testing)
     - [ ] git tasks
       - [ ] git clone
         - [x] all repos
@@ -139,7 +144,7 @@ MOODLE_DOCKER_PRE_STOP_HOOK="IP=$(docker inspect -f '{{range.NetworkSettings.Net
   - [ ] Add ruff (replacing Pylint, Flake8)
     - Possible to have preset rules (like Eslint sharable config)?  
       - No, not yet. https://github.com/astral-sh/ruff/discussions/3363
-        - [ ] Can be mimicked by using [`extend`](https://docs.astral.sh/ruff/settings/#extend)  
+        - [x] Can be mimicked by using [`extend`](https://docs.astral.sh/ruff/settings/#extend)  
           Solution: Have `ruff_defaults.toml` in `qpy-dev` and create command that sync's it into the QPy repos.  
           Look at [hatch default config](https://hatch.pypa.io/latest/config/static-analysis/#default-settings)  
           https://github.com/pypa/hatch/blob/master/ruff_defaults.toml
