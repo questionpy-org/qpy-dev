@@ -2,13 +2,13 @@
 
 [tool.poe.tasks."venv:install"]
 help = "Generate local requirements-dev.txt, install QPy packages and dependencies in dev env."
-default_item_type = "cmd"
 deps = [
-  "_repos:clone:ensure-repos-qpy",
+  "_git:clone:ensure-repos-qpy",
   "_venv:create-requirements-dev",
+  "_utils:msg venv:install",
 ]
+default_item_type = "cmd"
 sequence = [
-  { cmd = 'echo -e "${COLOR_TASK}[venv:install]${COLOR_OFF}"' },
   "pip install --no-input --disable-pip-version-check --requirement requirements-dev.txt",
   "poetry run pip install --no-input --disable-pip-version-check --no-deps --editable questionpy/common",
   "poetry run pip install --no-input --disable-pip-version-check --no-deps --editable questionpy/sdk",
@@ -19,12 +19,12 @@ sequence = [
 
 [tool.poe.tasks."venv:check"]
 help = "Check and print calculated list of dev env dependencies."
-deps = ["_repos:clone:ensure-repos-qpy"]
-env = { "PYTHONPATH" = "./modules" }
-sequence = [
-  { cmd = 'echo -e "${COLOR_TASK}[venv:check]${COLOR_OFF}"' },
-  { script = "deps:check" },
+deps = [
+  "_git:clone:ensure-repos-qpy",
+  "_utils:msg venv:check",
 ]
+env = { "PYTHONPATH" = "./modules" }
+script = "deps:check"
 
 ### private tasks
 

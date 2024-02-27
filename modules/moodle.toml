@@ -4,20 +4,19 @@
 help = "Start Moodle Docker stack."
 cwd = "./vendor/moodle-docker"
 deps = [
-  "_repos:clone:ensure-repos-moodle",
+  "_git:clone:ensure-repos-moodle",
   "_moodle:add-local-yml",
   "_moodle:ensure-moodle-config",
-  "_utils:ensure-docker",
+  "_moodle:ensure-docker",
+  "_utils:msg moodle:start",
 ]
-default_item_type = "cmd"
 sequence = [
-  { cmd = 'echo -e "${COLOR_TASK}[moodle:start]${COLOR_OFF}"' },
-  { ref = "_utils:hook MOODLE_DOCKER_PRE_START_HOOK '${COLOR_TASK}[moodle:start] ${COLOR_MSG}Pre-start hook...${COLOR_OFF}'" },
-  "./bin/moodle-docker-compose up -d",
-  { cmd = 'echo -e "${COLOR_TASK}[moodle:start]${COLOR_MSG} Waiting for DB...${COLOR_OFF}"' },
-  "./bin/moodle-docker-wait-for-db",
-  { ref = "_utils:hook MOODLE_DOCKER_POST_START_HOOK '${COLOR_TASK}[moodle:start] ${COLOR_MSG}Post-start hook...${COLOR_OFF}'" },
-  { cmd = 'echo -e "${COLOR_TASK}[moodle:start]${COLOR_MSG} Moodle running on http://localhost:${MOODLE_DOCKER_WEB_PORT}/${COLOR_OFF}"' },
+  "_moodle:hook MOODLE_DOCKER_PRE_START_HOOK '${COLOR_TASK}[moodle:start] ${COLOR_MSG}Pre-start hook...${COLOR_OFF}'",
+  { cmd = "./bin/moodle-docker-compose up -d" },
+  '_utils:msg moodle:start "Waiting for DB..."',
+  { cmd = "./bin/moodle-docker-wait-for-db" },
+  "_moodle:hook MOODLE_DOCKER_POST_START_HOOK '${COLOR_TASK}[moodle:start] ${COLOR_MSG}Post-start hook...${COLOR_OFF}'",
+  '_utils:msg moodle:start "Moodle running on http://localhost:${MOODLE_DOCKER_WEB_PORT}/"',
 ]
 
 [tool.poe.tasks."moodle:start".env]
@@ -30,14 +29,14 @@ COMPOSE_PROJECT_NAME= "${MOODLE_DOCKER_COMPOSE_PROJECT_NAME}"
 help = "Stop Moodle stack."
 cwd = "./vendor/moodle-docker"
 deps = [
-  "_repos:clone:ensure-repos-moodle",
-  "_utils:ensure-docker",
+  "_git:clone:ensure-repos-moodle",
+  "_moodle:ensure-docker",
+  "_utils:msg moodle:stop",
 ]
 sequence = [
-  { cmd = 'echo -e "${COLOR_TASK}[moodle:stop]${COLOR_OFF}"' },
-  { ref = "_utils:hook MOODLE_DOCKER_PRE_STOP_HOOK '${COLOR_TASK}[moodle:stop] ${COLOR_MSG}Pre-stop hook...${COLOR_OFF}'" },
+  "_moodle:hook MOODLE_DOCKER_PRE_STOP_HOOK '${COLOR_TASK}[moodle:stop] ${COLOR_MSG}Pre-stop hook...${COLOR_OFF}'",
   { cmd = "./bin/moodle-docker-compose stop" },
-  { ref = "_utils:hook MOODLE_DOCKER_POST_STOP_HOOK '${COLOR_TASK}[moodle:stop] ${COLOR_MSG}Post-stop hook...${COLOR_OFF}'" },
+  "_moodle:hook MOODLE_DOCKER_POST_STOP_HOOK '${COLOR_TASK}[moodle:stop] ${COLOR_MSG}Post-stop hook...${COLOR_OFF}'",
 ]
 
 [tool.poe.tasks."moodle:stop".env]
@@ -50,14 +49,11 @@ COMPOSE_PROJECT_NAME= "${MOODLE_DOCKER_COMPOSE_PROJECT_NAME}"
 help = "Destroy Moodle stack (clear database)."
 cwd = "./vendor/moodle-docker"
 deps = [
-  "_repos:clone:ensure-repos-moodle",
-  "_utils:ensure-docker",
+  "_git:clone:ensure-repos-moodle",
+  "_moodle:ensure-docker",
+  "_utils:msg moodle:rm",
 ]
-default_item_type = "cmd"
-sequence = [
-  'echo -e "${COLOR_TASK}[moodle:rm]${COLOR_OFF}"',
-  "./bin/moodle-docker-compose rm --volumes",
-]
+cmd = "./bin/moodle-docker-compose rm --volumes"
 
 [tool.poe.tasks."moodle:rm".env]
 MOODLE_DOCKER_WWWROOT = "${POE_ROOT}/vendor/moodle"
@@ -69,14 +65,11 @@ COMPOSE_PROJECT_NAME= "${MOODLE_DOCKER_COMPOSE_PROJECT_NAME}"
 help = "Follow Moodle logs."
 cwd = "./vendor/moodle-docker"
 deps = [
-  "_repos:clone:ensure-repos-moodle",
-  "_utils:ensure-docker",
+  "_git:clone:ensure-repos-moodle",
+  "_moodle:ensure-docker",
+  "_utils:msg moodle:logs",
 ]
-default_item_type = "cmd"
-sequence = [
-  'echo -e "${COLOR_TASK}[moodle:logs]${COLOR_OFF}"',
-  "./bin/moodle-docker-compose logs --follow --tail=100 webserver",
-]
+cmd = "./bin/moodle-docker-compose logs --follow --tail=100 webserver"
 
 [tool.poe.tasks."moodle:logs".env]
 MOODLE_DOCKER_WWWROOT = "${POE_ROOT}/vendor/moodle"
@@ -88,8 +81,9 @@ COMPOSE_PROJECT_NAME= "${MOODLE_DOCKER_COMPOSE_PROJECT_NAME}"
 help = "Moodle docker-compose command."
 cwd = "./vendor/moodle-docker"
 deps = [
-  "_repos:clone:ensure-repos-moodle",
-  "_utils:ensure-docker",
+  "_git:clone:ensure-repos-moodle",
+  "_moodle:ensure-docker",
+  "_utils:msg moodle:docker-compose",
 ]
 cmd = "./bin/moodle-docker-compose"
 
@@ -105,7 +99,7 @@ COMPOSE_PROJECT_NAME= "${MOODLE_DOCKER_COMPOSE_PROJECT_NAME}"
 # - Add qtype-questionpy as mounted volume.
 [tool.poe.tasks."_moodle:add-local-yml"]
 cwd = "./vendor/moodle-docker"
-deps = ["_repos:clone:ensure-repos-qpy-qtype"]
+deps = ["_git:clone:ensure-repos-qpy-qtype"]
 shell = """
   [[ -f local.yml ]] && exit 0
   echo 'version: "2"
@@ -122,3 +116,23 @@ shell = """
   [[ -f vendor/moodle/config.php ]] && exit 0
   cp vendor/moodle-docker/config.docker-template.php vendor/moodle/config.php
 """
+
+[tool.poe.tasks."_moodle:ensure-docker"]
+shell = """
+  if ! $(docker info >/dev/null 2>&1); then
+    echo -e "${COLOR_WARN}Docker daemon is not running!${COLOR_OFF}"
+    exit 1
+  fi
+"""
+
+[tool.poe.tasks."_moodle:hook"]
+shell = """
+  if [[ -n "${!name}" ]]; then
+    echo -e "${msg}${COLOR_OFF}"
+    eval "${!name}"
+  fi
+"""
+args = [
+  { "name" = "name", positional = true, required = true },
+  { "name" = "msg",  positional = true, required = true },
+]

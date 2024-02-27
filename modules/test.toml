@@ -2,13 +2,13 @@
 
 [tool.poe.tasks.test]
 help = "Run pytest."
-deps = ["_repos:clone:ensure-repos-qpy"]
-shell = '''
+deps = ["_git:clone:ensure-repos-qpy"]
+shell = """
   for repo in $_repos; do
     echo -e "${COLOR_TASK}[test] ${COLOR_REPO}(${repo})${COLOR_OFF}"
     pytest --rootdir=./questionpy/$repo ./questionpy/$repo
   done
-'''
+"""
 uses = { _repos = "_utils:parse-repos $repos" }
 
   [[tool.poe.tasks.test.args]]

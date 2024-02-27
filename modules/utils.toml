@@ -1,43 +1,20 @@
-[tool.poe.tasks."_utils:ensure-docker"]
-shell = """
-  if ! $(docker info >/dev/null 2>&1); then
-    echo -e "${COLOR_WARN}Docker daemon is not running!${COLOR_OFF}"
-    exit 1
-  fi
-"""
-
-[tool.poe.tasks."_utils:git-clone"]
-shell = """
-  if [[ ! -d "$dir" ]]; then
-    git clone --branch $branch $repo "$dir"
-  else
-    exit 0
-  fi
-"""
-args = [
-  { "name" = "repo",   positional = true, required = true },
-  { "name" = "dir",    positional = true, required = true },
-  { "name" = "branch", default = "dev" },
-]
-
-[tool.poe.tasks."_utils:hook"]
-shell = """
-  if [[ -n "${!name}" ]]; then
-    echo -e "${msg}${COLOR_OFF}"
-    eval "${!name}"
-  fi
-"""
-args = [
-  { "name" = "name", positional = true, required = true },
-  { "name" = "msg",  positional = true, required = true },
-]
-
 [tool.poe.tasks."_utils:parse-repos"]
-expr = '''(
+expr = """(
   "common sdk server"
   if repos == ["all"]
   else " ".join(sorted(set(repos)))
     if all(item in ["common", "sdk", "server"]
     for item in repos) else ""
-)'''
+)"""
 args = [{ name = "repos", positional = true, multiple = true }]
+
+[tool.poe.tasks."_utils:msg"]
+shell = """
+  echo -ne "${COLOR_TASK}[${task_name}]"
+  [[ -n "${msg}" ]] && echo -ne " ${COLOR_MSG}${msg}"
+  echo -e "${COLOR_OFF}"
+"""
+args = [
+  { name = "task_name", positional = true, required = true },
+  { name = "msg",       positional = true, default = "" },
+]

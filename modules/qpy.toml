@@ -34,7 +34,7 @@ cmd = "mkdir -p cache/packages cache/repo_index"
 cwd = "./questionpy/server"
 cmd = "python -m questionpy_server"
 deps = [
-  "_repos:clone:ensure-repos-qpy",
+  "_git:clone:ensure-repos-qpy",
   "_qpy:ensure-config",
   "_qpy:ensure-cache-dir",
 ]
@@ -43,14 +43,11 @@ deps = [
 cwd = "./questionpy/server"
 cmd = "watchmedo auto-restart --pattern '*.py' --directory \"${POE_ROOT}/questionpy/common/questionpy_common\" --directory \"${POE_ROOT}/questionpy/server/questionpy_server\" --recursive --debounce-interval 1 python -- -m questionpy_server"
 deps = [
-  "_repos:clone:ensure-repos-qpy",
+  "_git:clone:ensure-repos-qpy",
   "_qpy:ensure-config",
   "_qpy:ensure-cache-dir",
 ]
 
 [tool.poe.tasks."_qpy:serve-msg"]
-default_item_type = "cmd"
-sequence = [
-  'echo -e "${COLOR_TASK}[${task_name}] ${COLOR_MSG}Starting QuestionPy server on http://${QPY_WEBSERVICE__LISTEN_ADDRESS}:${QPY_WEBSERVICE__PORT}. Use http://host.docker.internal:${QPY_WEBSERVICE__PORT} as URL in the QuestionPy Moodle settings.${COLOR_OFF}"',
-]
+ref = "_utils:msg ${task_name} Starting QuestionPy server on http://${QPY_WEBSERVICE__LISTEN_ADDRESS}:${QPY_WEBSERVICE__PORT}. Use http://host.docker.internal:${QPY_WEBSERVICE__PORT} as URL in the QuestionPy Moodle settings."
 args = [{ name = "task_name", positional = true, required = true }]

@@ -2,14 +2,14 @@
 
 [tool.poe.tasks.typecheck]
 help = "Run mypy type checker."
-deps = ["_repos:clone:ensure-repos-qpy"]
+deps = ["_git:clone:ensure-repos-qpy"]
 uses = { _repos = "_utils:parse-repos $repos" }
-shell = '''
+shell = """
   for repo in $_repos; do
     echo -e "${COLOR_TASK}[typecheck] ${COLOR_REPO}(${repo})${COLOR_OFF}"
     mypy --config-file ./questionpy/$repo/pyproject.toml ./questionpy/$repo
   done
-'''
+"""
 
   [[tool.poe.tasks.typecheck.args]]
   name = "repos"

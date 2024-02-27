@@ -40,8 +40,9 @@ include = [
   "./modules/typecheck.toml",
   "./modules/test.toml",
   "./modules/tox.toml",
-  "./modules/repos.toml",
+  "./modules/git.toml",
   "./modules/venv.toml",
+  "./modules/config.toml",
   "./modules/moodle.toml",
 ]
 

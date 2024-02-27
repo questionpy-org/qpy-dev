@@ -1,0 +1,37 @@
+### config:all
+
+[tool.poe.tasks."config:all"]
+help = "Ensure package's tooling config is in sync."
+deps = ["_utils:msg config:all"]
+sequence = [
+  "config:ruff",
+]
+
+### config:ruff
+
+[tool.poe.tasks."config:ruff"]
+help = "Ensure package's ruff default config is in sync."
+deps = ["_git:clone:ensure-repos-qpy"]
+sequence = [
+  "_config:cp-ruff-defaults common",
+  "_config:cp-ruff-defaults sdk",
+  "_config:cp-ruff-defaults server",
+]
+
+### private tasks
+
+# TODO messages
+[tool.poe.tasks."_config:cp-ruff-defaults"]
+shell = """
+  if cmp -s ./ruff_defaults.toml questionpy/$repo/ruff_defaults.toml; then
+    echo -ne "${COLOR_TASK}[config:ruff] ${COLOR_REPO}"
+    printf '%-8s' "(${repo})"
+    echo -e " ${COLOR_MSG}ruff_defaults.toml is up-to-date${COLOR_OFF}"
+  else
+    cp ruff_defaults.toml questionpy/$repo/ruff_defaults.toml
+    echo -ne "${COLOR_TASK}[config:ruff] ${COLOR_REPO}"
+    printf '%-8s' "(${repo})"
+    echo -e " ${COLOR_WARN}Sync'd ruff_defaults.toml${COLOR_OFF}"
+  fi
+"""
+args = [{ name = "repo", positional = true, required = true }]
