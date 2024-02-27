@@ -11,7 +11,7 @@ sequence = [
 
 [tool.poe.tasks."config:ruff"]
 help = "Ensure package's ruff default config is in sync."
-deps = ["_git:clone:ensure-repos-qpy"]
+deps = ["_clone:ensure-repos:qpy"]
 sequence = [
   "_config:cp-ruff-defaults common",
   "_config:cp-ruff-defaults sdk",

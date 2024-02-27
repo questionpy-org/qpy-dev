@@ -4,7 +4,7 @@
 help = "Start Moodle Docker stack."
 cwd = "./vendor/moodle-docker"
 deps = [
-  "_git:clone:ensure-repos-moodle",
+  "_clone:ensure-repos:moodle",
   "_moodle:add-local-yml",
   "_moodle:ensure-moodle-config",
   "_moodle:ensure-docker",
@@ -29,7 +29,7 @@ COMPOSE_PROJECT_NAME= "${MOODLE_DOCKER_COMPOSE_PROJECT_NAME}"
 help = "Stop Moodle stack."
 cwd = "./vendor/moodle-docker"
 deps = [
-  "_git:clone:ensure-repos-moodle",
+  "_clone:ensure-repos:moodle",
   "_moodle:ensure-docker",
   "_utils:msg moodle:stop",
 ]
@@ -49,7 +49,7 @@ COMPOSE_PROJECT_NAME= "${MOODLE_DOCKER_COMPOSE_PROJECT_NAME}"
 help = "Destroy Moodle stack (clear database)."
 cwd = "./vendor/moodle-docker"
 deps = [
-  "_git:clone:ensure-repos-moodle",
+  "_clone:ensure-repos:moodle",
   "_moodle:ensure-docker",
   "_utils:msg moodle:rm",
 ]
@@ -65,7 +65,7 @@ COMPOSE_PROJECT_NAME= "${MOODLE_DOCKER_COMPOSE_PROJECT_NAME}"
 help = "Follow Moodle logs."
 cwd = "./vendor/moodle-docker"
 deps = [
-  "_git:clone:ensure-repos-moodle",
+  "_clone:ensure-repos:moodle",
   "_moodle:ensure-docker",
   "_utils:msg moodle:logs",
 ]
@@ -81,7 +81,7 @@ COMPOSE_PROJECT_NAME= "${MOODLE_DOCKER_COMPOSE_PROJECT_NAME}"
 help = "Moodle docker-compose command."
 cwd = "./vendor/moodle-docker"
 deps = [
-  "_git:clone:ensure-repos-moodle",
+  "_clone:ensure-repos:moodle",
   "_moodle:ensure-docker",
   "_utils:msg moodle:docker-compose",
 ]
@@ -99,7 +99,7 @@ COMPOSE_PROJECT_NAME= "${MOODLE_DOCKER_COMPOSE_PROJECT_NAME}"
 # - Add qtype-questionpy as mounted volume.
 [tool.poe.tasks."_moodle:add-local-yml"]
 cwd = "./vendor/moodle-docker"
-deps = ["_git:clone:ensure-repos-qpy-qtype"]
+deps = ["_clone:ensure-repos:qtype"]
 shell = """
   [[ -f local.yml ]] && exit 0
   echo 'version: "2"

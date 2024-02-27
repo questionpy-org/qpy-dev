@@ -40,10 +40,10 @@ include = [
   "./modules/typecheck.toml",
   "./modules/test.toml",
   "./modules/tox.toml",
-  "./modules/git.toml",
   "./modules/venv.toml",
   "./modules/config.toml",
   "./modules/moodle.toml",
+  "./modules/clone.toml",
 ]
 
 [tool.poe.env]

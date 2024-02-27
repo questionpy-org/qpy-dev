@@ -2,7 +2,7 @@
 
 [tool.poe.tasks.fmt]
 help = "Run Ruff formatter."
-deps = ["_git:clone:ensure-repos-qpy"]
+deps = ["_clone:ensure-repos:qpy"]
 shell = """
   check_flag=""
   [ "$check" = "True" ] && check_flag="--check"

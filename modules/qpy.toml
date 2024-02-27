@@ -34,7 +34,7 @@ cmd = "mkdir -p cache/packages cache/repo_index"
 cwd = "./questionpy/server"
 cmd = "python -m questionpy_server"
 deps = [
-  "_git:clone:ensure-repos-qpy",
+  "_clone:ensure-repos:qpy",
   "_qpy:ensure-config",
   "_qpy:ensure-cache-dir",
 ]
@@ -43,7 +43,7 @@ deps = [
 cwd = "./questionpy/server"
 cmd = "watchmedo auto-restart --pattern '*.py' --directory \"${POE_ROOT}/questionpy/common/questionpy_common\" --directory \"${POE_ROOT}/questionpy/server/questionpy_server\" --recursive --debounce-interval 1 python -- -m questionpy_server"
 deps = [
-  "_git:clone:ensure-repos-qpy",
+  "_clone:ensure-repos:qpy",
   "_qpy:ensure-config",
   "_qpy:ensure-cache-dir",
 ]

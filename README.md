@@ -118,9 +118,9 @@ MOODLE_DOCKER_PRE_STOP_HOOK="IP=$(docker inspect -f '{{range.NetworkSettings.Net
         - [ ] coverage/report
         - [ ] phpunit (https://moodledev.io/general/development/process/testing)
     - [ ] git tasks
-      - [ ] git clone
+      - [x] git clone
         - [x] all repos
-        - [ ] some repos, single repo
+        - [x] some repos, single repo
       - [ ] git pull/fetch (to see if there have been pushes)
     - [x] tox task
       - [x] make sure dev repos are used in tox

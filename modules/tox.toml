@@ -2,7 +2,7 @@
 
 [tool.poe.tasks.tox]
 help = "Run tox."
-deps = ["_git:clone:ensure-repos-qpy"]
+deps = ["_clone:ensure-repos:qpy"]
 cmd = "tox"
 
   [[tool.poe.tasks.lint.args]]

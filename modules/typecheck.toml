@@ -2,7 +2,7 @@
 
 [tool.poe.tasks.typecheck]
 help = "Run mypy type checker."
-deps = ["_git:clone:ensure-repos-qpy"]
+deps = ["_clone:ensure-repos:qpy"]
 uses = { _repos = "_utils:parse-repos $repos" }
 shell = """
   for repo in $_repos; do

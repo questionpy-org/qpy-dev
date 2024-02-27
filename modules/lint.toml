@@ -2,7 +2,7 @@
 
 [tool.poe.tasks.lint]
 help = "Run Ruff linter."
-deps = ["_git:clone:ensure-repos-qpy"]
+deps = ["_clone:ensure-repos:qpy"]
 shell = """
   for repo in $_repos; do
     echo -e "${COLOR_TASK}[lint] ${COLOR_REPO}(${repo})${COLOR_OFF}"

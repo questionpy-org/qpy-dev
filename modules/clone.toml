@@ -1,0 +1,124 @@
+### clone
+
+[tool.poe.tasks."clone"]
+help = "Clone all repositories."
+deps = ["_utils:msg clone"]
+sequence = [
+  "_clone:ensure-repos:qpy",
+  "_clone:ensure-repos:qtype",
+  "_clone:ensure-repos:docs",
+  "_clone:ensure-repos:moodle",
+]
+
+### clone:qy
+
+[tool.poe.tasks."clone:qpy"]
+help = "Clone QuestionPy repositories (common, sdk, server)."
+deps = ["_utils:msg clone:qpy"]
+ref = "_clone:ensure-repos:qpy"
+
+### clone:qy:common
+
+[tool.poe.tasks."clone:qpy:common"]
+help = "Clone questionpy-common repository."
+deps = ["_utils:msg clone:qpy:common"]
+ref = "_clone:ensure-repos:qpy:common"
+
+### clone:qy:sdk
+
+[tool.poe.tasks."clone:qpy:sdk"]
+help = "Clone questionpy-sdk repository."
+deps = ["_utils:msg clone:qpy:sdk"]
+ref = "_clone:ensure-repos:qpy:sdk"
+
+### clone:qy:server
+
+[tool.poe.tasks."clone:qpy:server"]
+help = "Clone questionpy-server repository."
+deps = ["_utils:msg clone:qpy:server"]
+ref = "_clone:ensure-repos:qpy:server"
+
+### clone:qy:docs
+
+[tool.poe.tasks."clone:docs"]
+help = "Clone questionpy-docs repository."
+deps = ["_utils:msg clone:docs"]
+ref = "_clone:ensure-repos:docs"
+
+### clone:qtype
+
+[tool.poe.tasks."clone:qtype"]
+help = "Clone moodle-qtype_questionpy repository."
+deps = ["_utils:msg clone:qtype"]
+ref = "_clone:ensure-repos:qtype"
+
+### clone:moodle
+
+[tool.poe.tasks."clone:moodle"]
+help = "Clone Moodle code and moodle-docker repository."
+deps = ["_utils:msg clone:moodle"]
+ref = "_clone:ensure-repos:moodle"
+
+### clone:moodle:code
+
+[tool.poe.tasks."clone:moodle:code"]
+help = "Clone Moodle code repository."
+deps = ["_utils:msg clone:moodle:code"]
+ref = "_clone:ensure-repos:moodle:code"
+
+### clone:moodle:docker
+
+[tool.poe.tasks."clone:moodle:docker"]
+help = "Clone moodle-docker repository."
+deps = ["_utils:msg clone:moodle:docker"]
+ref = "_clone:ensure-repos:moodle:docker"
+
+### private tasks
+
+[tool.poe.tasks."_clone:ensure-repos:qpy"]
+sequence = [
+  "_clone:ensure-repos:qpy:common",
+  "_clone:ensure-repos:qpy:sdk",
+  "_clone:ensure-repos:qpy:server",
+]
+
+[tool.poe.tasks."_clone:ensure-repos:qpy:common"]
+ref = "_clone $REPO_QUESTIONPY_COMMON ./questionpy/common"
+
+[tool.poe.tasks."_clone:ensure-repos:qpy:sdk"]
+ref = "_clone $REPO_QUESTIONPY_SDK ./questionpy/sdk"
+
+[tool.poe.tasks."_clone:ensure-repos:qpy:server"]
+ref = "_clone $REPO_QUESTIONPY_SERVER ./questionpy/server"
+
+[tool.poe.tasks."_clone:ensure-repos:docs"]
+ref = "_clone $REPO_QUESTIONPY_DOCS ./questionpy/docs"
+
+[tool.poe.tasks."_clone:ensure-repos:qtype"]
+ref = "_clone $REPO_MOODLE_QTYPE_QUESTIONPY ./questionpy/moodle-qtype"
+
+[tool.poe.tasks."_clone:ensure-repos:moodle"]
+sequence = [
+  "_clone:ensure-repos:moodle:code",
+  "_clone:ensure-repos:moodle:docker",
+]
+
+[tool.poe.tasks."_clone:ensure-repos:moodle:code"]
+ref = "_clone $REPO_MOODLE ./vendor/moodle --branch $REPO_MOODLE_TAG"
+
+[tool.poe.tasks."_clone:ensure-repos:moodle:docker"]
+ref = "_clone $REPO_MOODLE_DOCKER ./vendor/moodle-docker --branch main"
+
+[tool.poe.tasks."_clone"]
+shell = """
+  if [[ ! -d "$dir" ]]; then
+    git clone --branch $branch $repo "$dir"
+  else
+    exit 0
+  fi
+"""
+args = [
+  { "name" = "repo",   positional = true, required = true },
+  { "name" = "dir",    positional = true, required = true },
+  { "name" = "branch", default = "dev" },
+]
