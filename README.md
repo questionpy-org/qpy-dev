@@ -115,7 +115,7 @@ MOODLE_DOCKER_PRE_STOP_HOOK="IP=$(docker inspect -f '{{range.NetworkSettings.Net
       - [x] Type-check
       - [ ] Test
         - [x] pytest
-        - [ ] coverage/report
+        - [x] coverage/report
         - [ ] phpunit (https://moodledev.io/general/development/process/testing)
     - [ ] git tasks
       - [x] git clone

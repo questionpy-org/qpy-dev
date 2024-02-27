@@ -1,7 +1,7 @@
 ### test
 
 [tool.poe.tasks.test]
-help = "Run pytest."
+help = "Run test suites."
 deps = ["_clone:ensure-repos:qpy"]
 shell = """
   for repo in $_repos; do
@@ -12,6 +12,67 @@ shell = """
 uses = { _repos = "_utils:parse-repos $repos" }
 
   [[tool.poe.tasks.test.args]]
+  name = "repos"
+  positional = true
+  multiple = true
+  help = "List of repositories to test (common, sdk, server or all)."
+  default = "all"
+
+### coverage
+
+[tool.poe.tasks."test:coverage"]
+help = "Run tests and print coverage report."
+deps = ["_clone:ensure-repos:qpy"]
+sequence = [
+  "test:coverage:generate $repos",
+  "test:coverage:report $repos",
+]
+
+  [[tool.poe.tasks."test:coverage".args]]
+  name = "repos"
+  positional = true
+  multiple = true
+  help = "List of repositories to test (common, sdk, server or all)."
+  default = "all"
+
+### coverage:generate
+
+[tool.poe.tasks."test:coverage:generate"]
+help = "Create coverage data."
+deps = ["_clone:ensure-repos:qpy"]
+shell = '''
+  for repo in $_repos; do
+    echo -e "${COLOR_TASK}[test:coverage:generate] ${COLOR_REPO}(${repo})${COLOR_OFF}"
+    coverage run \
+      --data-file=questionpy/$repo/.coverage \
+      --module pytest \
+      --rootdir=./questionpy/$repo \
+      ./questionpy/$repo
+  done
+'''
+uses = { _repos = "_utils:parse-repos $repos" }
+
+  [[tool.poe.tasks."test:coverage:generate".args]]
+  name = "repos"
+  positional = true
+  multiple = true
+  help = "List of repositories to test (common, sdk, server or all)."
+  default = "all"
+
+### coverage:report
+
+[tool.poe.tasks."test:coverage:report"]
+help = "Show coverage report."
+deps = ["_clone:ensure-repos:qpy"]
+shell = '''
+  for repo in $_repos; do
+    echo -e "${COLOR_TASK}[test:coverage:report] ${COLOR_REPO}(${repo})${COLOR_OFF}"
+    coverage report --ignore-errors --data-file=questionpy/$repo/.coverage
+  done
+'''
+uses = { _repos = "_utils:parse-repos $repos" }
+
+  [[tool.poe.tasks."test:coverage:report".args]]
   name = "repos"
   positional = true
   multiple = true
