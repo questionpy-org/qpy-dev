@@ -10,3 +10,16 @@ cmd = "tox"
   positional = true
   help = "List of tox envs to run."
   default = ""
+
+### toxp
+
+[tool.poe.tasks.toxp]
+help = "Run tox (parallel)."
+deps = ["_clone:ensure-repos:qpy"]
+cmd = "tox -p"
+
+  [[tool.poe.tasks.lint.args]]
+  name = "envs"
+  positional = true
+  help = "List of tox envs to run."
+  default = ""

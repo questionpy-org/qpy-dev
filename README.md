@@ -48,6 +48,12 @@ $ echo 'alias poe="poetry run poe"' >> ~/.bash_profile
 
 ##### Running `tox`
 
+`poe toxp` is probably the most useful command as it runs all checks in parallel
+against your current dev code. Run it whenever you are about to create PRs or
+push code.
+
+###### Install Python Versions
+
 Install all required Python versions for testing. Pyenv is easiest, but other
 methods work too.
 

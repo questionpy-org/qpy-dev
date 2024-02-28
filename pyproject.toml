@@ -73,7 +73,9 @@ extend = "ruff_defaults.toml"
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-env_list = py{39,310,311}-{common,sdk,server}
+env_list =
+  py{39,310,311}-{common,sdk,server}-test
+  {common,sdk,server}-{format,lint,typecheck}
 minversion = 4.13.0
 
 [testenv]
@@ -84,8 +86,14 @@ change_dir =
   sdk: questionpy/sdk
   server: questionpy/server
 commands_pre =
-  poetry install --no-root --only main,test
-  sdk,server: pip install --no-input --disable-pip-version-check --editable ../common
-  sdk: pip install --no-input --disable-pip-version-check --editable ../server
-commands = coverage run -m pytest {tty:--color=yes} tests {posargs}
+  test,typecheck: poetry install --no-interaction --no-root --only main,test
+  typecheck: poetry install --no-interaction --no-root --only type-checker
+  lint,format: poetry install --no-interaction --no-root --only linter
+  {sdk,server}-{test,typcheck}: pip install --no-input --disable-pip-version-check --editable ../common
+  sdk-{test,typcheck}: pip install --no-input --disable-pip-version-check --editable ../server
+commands =
+  test: pytest {tty:--color=yes} tests {posargs}
+  format: ruff format --check {posargs:.}
+  lint: ruff check {posargs:.}
+  typecheck: mypy {posargs:.}
 """
