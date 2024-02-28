@@ -71,6 +71,24 @@ MOODLE_DOCKER_POST_START_HOOK="IP=$(docker inspect -f '{{range.NetworkSettings.N
 MOODLE_DOCKER_PRE_STOP_HOOK="IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' qpy-dev-moodle-webserver-1); sudo iptables -D INPUT -s $IP/16 -j ACCEPT"
 ```
 
+### PR Waterfall
+
+This repository does not address the PR waterfall issue directly that occurs
+when pushing commits that include breaking changes. But it does encourage to
+check against the other packages before pushing.
+
+When pushing code/merging PRs that involve multiple repositories, you will need
+to respect the package's dependency graph, meaning you have to adhere to a
+particular order to avoid failed CI pipelines.
+
+1. questionpy-common
+1. questionpy-server
+1. questionpy-sdk
+1. questionpy-docs
+
+Also, related PRs should be grouped and accepted in a timely manner to reduce
+friction for other developers as much as possible.
+
 ### Todos
 
 - **Manage unified single virtual env**
@@ -159,9 +177,3 @@ MOODLE_DOCKER_PRE_STOP_HOOK="IP=$(docker inspect -f '{{range.NetworkSettings.Net
   - [ ] pre-commit-hook
     - lint/test/...
     - lint conventional commit messages
-
-### Non-Goal
-
-- Not addressing the PR waterfall issue that occurs when commiting changes that
-  involve multiple QuestionPy packages. No idea how to do this (unless
-  migrating ot a monorepo)...
