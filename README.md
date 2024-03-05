@@ -176,6 +176,11 @@ friction for other developers as much as possible.
           Solution: Have `ruff_defaults.toml` in `qpy-dev` and create command that sync's it into the QPy repos.  
           Look at [hatch default config](https://hatch.pypa.io/latest/config/static-analysis/#default-settings)  
           https://github.com/pypa/hatch/blob/master/ruff_defaults.toml
+    - extra rules?  
+      ```toml
+      # allow star imports, permit line breaks before (but not after) binary operators
+      ignore = F403 F405 W503
+      ```
   - [ ] Add https://github.com/commitizen-tools/commitizen?
   - [ ] Fix this bug and create PR: https://github.com/nat-n/poethepoet/issues/198
   - [ ] Remove tox config from individual repos
