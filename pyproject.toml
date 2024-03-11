@@ -86,7 +86,7 @@ change_dir =
   sdk: questionpy/sdk
   server: questionpy/server
 commands_pre =
-  test,typecheck: poetry install --no-interaction --no-root --only main,test
+  test,typecheck: poetry install --no-interaction --no-root --only main,dev,test
   typecheck: poetry install --no-interaction --no-root --only type-checker
   lint,format: poetry install --no-interaction --no-root --only linter
   {sdk,server}-{test,typcheck}: pip install --no-input --disable-pip-version-check --editable ../common
