@@ -45,6 +45,13 @@ help = "Clone questionpy-docs repository."
 deps = ["_utils:msg clone:docs"]
 ref = "_clone:ensure-repos:docs"
 
+### clone:qy:dotgithub
+
+[tool.poe.tasks."clone:dotgithub"]
+help = "Clone .github repository."
+deps = ["_utils:msg clone:dotgithub"]
+ref = "_clone:ensure-repos:dotgithub"
+
 ### clone:qtype
 
 [tool.poe.tasks."clone:qtype"]
@@ -93,6 +100,9 @@ ref = "_clone $REPO_QUESTIONPY_SERVER ./questionpy/server"
 
 [tool.poe.tasks."_clone:ensure-repos:docs"]
 ref = "_clone $REPO_QUESTIONPY_DOCS ./questionpy/docs"
+
+[tool.poe.tasks."_clone:ensure-repos:dotgithub"]
+ref = "_clone $REPO_QUESTIONPY_DOTGITHUB ./questionpy/dotgithub --branch $REPO_QUESTIONPY_DOTGITHUB_TAG"
 
 [tool.poe.tasks."_clone:ensure-repos:qtype"]
 ref = "_clone $REPO_MOODLE_QTYPE_QUESTIONPY ./questionpy/moodle-qtype"

@@ -145,7 +145,7 @@ friction for other developers as much as possible.
       - [ ] git clone
         - [x] all repos
         - [x] some repos, single repo
-        - [ ] .github repo
+        - [x] .github repo
       - [ ] git pull/fetch (to see if there have been pushes)
     - [x] tox task
       - [x] make sure dev repos are used in tox
