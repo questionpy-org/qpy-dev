@@ -142,13 +142,15 @@ friction for other developers as much as possible.
         - [x] coverage/report
         - [ ] phpunit (https://moodledev.io/general/development/process/testing)
     - [ ] git tasks
-      - [x] git clone
+      - [ ] git clone
         - [x] all repos
         - [x] some repos, single repo
+        - [ ] .github repo
       - [ ] git pull/fetch (to see if there have been pushes)
     - [x] tox task
       - [x] make sure dev repos are used in tox
       - [x] add pyenv to requirements/add pyenv instructions
+    - [ ] Run GH actions locally through act?
     - [ ] Sync tooling config into QPy repos
       - [x] `ruff_defaults.toml`
       - [ ] Use tomlkit to sync tooling config (`pyproject.toml`)
@@ -169,7 +171,7 @@ friction for other developers as much as possible.
     - [ ] Open docs in browser
     - [ ] Publish docs
 - **Update tooling**
-  - [ ] Add ruff (replacing Pylint, Flake8)
+  - [x] Add ruff (replacing Pylint, Flake8)
     - Possible to have preset rules (like Eslint sharable config)?  
       - No, not yet. https://github.com/astral-sh/ruff/discussions/3363
         - [x] Can be mimicked by using [`extend`](https://docs.astral.sh/ruff/settings/#extend)  
@@ -181,10 +183,11 @@ friction for other developers as much as possible.
       # allow star imports, permit line breaks before (but not after) binary operators
       ignore = F403 F405 W503
       ```
-  - [ ] Add https://github.com/commitizen-tools/commitizen?
-  - [ ] Fix this bug and create PR: https://github.com/nat-n/poethepoet/issues/198
-  - [ ] Remove tox config from individual repos
+  - [x] Remove tox config from individual repos
   - [ ] Update GH actions
-  - [ ] pre-commit-hook
-    - lint/test/...
-    - lint conventional commit messages
+  - Other less important
+    - [ ] Add https://github.com/commitizen-tools/commitizen?
+    - [ ] Fix this bug and create PR: https://github.com/nat-n/poethepoet/issues/198
+    - [ ] pre-commit-hook
+      - lint/test/...
+      - lint conventional commit messages
