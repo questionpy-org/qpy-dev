@@ -45,6 +45,7 @@ include = [
   "./modules/moodle.toml",
   "./modules/clone.toml",
 ]
+shell_interpreter = "bash"
 
 [tool.poe.env]
 COLOR_TASK = '\033[1;34m'
