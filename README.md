@@ -167,8 +167,8 @@ friction for other developers as much as possible.
           - check that `extend-*` variants are used
         - [ ] check no `tool.pylint*` are present
   - Docs
-    - [ ] Build docs using mkdocs
-    - [ ] Open docs in browser
+    - [x] Build docs using mkdocs
+    - [x] Watch docs
     - [ ] Publish docs
 - **Update tooling**
   - [x] Add ruff (replacing Pylint, Flake8)

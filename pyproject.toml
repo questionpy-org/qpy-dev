@@ -41,6 +41,7 @@ include = [
   "./modules/test.toml",
   "./modules/tox.toml",
   "./modules/venv.toml",
+  "./modules/docs.toml",
   "./modules/config.toml",
   "./modules/moodle.toml",
   "./modules/clone.toml",

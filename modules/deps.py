@@ -2,6 +2,7 @@ import contextlib
 import logging
 import os
 import sys
+from collections.abc import Generator
 from operator import attrgetter
 from pathlib import Path
 
@@ -9,6 +10,7 @@ from poetry.core.factory import Factory
 from poetry.core.packages.dependency import Dependency
 from poetry.core.packages.dependency_group import MAIN_GROUP
 from poetry.core.packages.package import Package
+from poetry.core.packages.path_dependency import PathDependency
 
 poe_root_str = os.environ.get("POE_ROOT", "")
 if not poe_root_str:
@@ -26,7 +28,7 @@ class VersionConstraintError(Exception):
 
 
 class DependencyMerger:
-    PACKAGE_DIRS = ("common", "sdk", "server")
+    PACKAGE_DIRS = ("common", "sdk", "server", "docs")
     GROUPS = (MAIN_GROUP, "dev", "test", "linter", "type-checker")
 
     def __init__(self, root_dir: Path) -> None:
@@ -42,8 +44,11 @@ class DependencyMerger:
                     self._add(dep, pkg)
 
     @property
-    def deps(self) -> list[Dependency]:
-        return sorted((dep for dep, _ in self._deps.values()), key=attrgetter("name"))
+    def deps(self) -> Generator[str, None, None]:
+        return (
+            str(dep.full_path) if isinstance(dep, PathDependency) else dep.to_pep_508()
+            for dep in sorted((_dep for _dep, _ in self._deps.values()), key=attrgetter("name"))
+        )
 
     def _add(self, dep: Dependency, pkg: Package) -> None:
         other_dep, other_pkg = None, None
@@ -91,7 +96,7 @@ def check() -> None:
     try:
         manager.merge()
         for dep in manager.deps:
-            logger.info("%s", dep)
+            logger.info(dep)
     except VersionConstraintError:
         logger.exception("You need to resolve the conflicting requirement specifiers")
         sys.exit(-1)

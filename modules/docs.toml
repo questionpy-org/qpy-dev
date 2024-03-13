@@ -1,0 +1,27 @@
+### docs
+
+[tool.poe.tasks."docs:build"]
+help = "Build QuestionPy documentation."
+deps = ["_clone:ensure-repos:qpy"]
+cwd = "./questionpy/docs"
+shell = """
+  if [ "$prod" = "True" ]; then
+    mkdocs build
+  else
+    MKDOCS_DEV=true mkdocs build
+  fi
+"""
+
+  [[tool.poe.tasks."docs:build".args]]
+  name = "prod"
+  help = "Build production version."
+  default = false
+  options = ["-p", "--production"]
+  type = "boolean"
+
+[tool.poe.tasks."docs:watch"]
+help = "Serve QuestionPy documentation (watch)."
+deps = ["_clone:ensure-repos:qpy"]
+cwd = "./questionpy/docs"
+cmd = "mkdocs serve --watch ."
+env = { "MKDOCS_DEV" = "true" }
