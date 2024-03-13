@@ -61,12 +61,6 @@ methods work too.
 $ pyenv install 3.9 3.10 3.11
 ```
 
-Run all tox tasks in parallel.
-
-```sh
-$ poe tox -p
-```
-
 ##### Moodle start/stop hooks
 
 Run an arbitrary shell command on Moodle start/shutdown. The examples add an
