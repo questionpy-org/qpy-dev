@@ -11,7 +11,7 @@ homepage = "https://questionpy.org"
 version = "0.0.0"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.11"
 poethepoet = "^0.24.4"
 poetry = "^1.7.1"
 watchdog = {version = "^4.0.0", extras = ["watchmedo"]}
@@ -76,7 +76,7 @@ extend = "ruff_defaults.toml"
 legacy_tox_ini = """
 [tox]
 env_list =
-  py{39,310,311}-{common,sdk,server}-test
+  py{311,312}-{common,sdk,server}-test
   {common,sdk,server}-{format,lint,typecheck}
 minversion = 4.13.0
 

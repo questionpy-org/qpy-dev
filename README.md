@@ -58,7 +58,7 @@ Install all required Python versions for testing. Pyenv is easiest, but other
 methods work too.
 
 ```
-$ pyenv install 3.9 3.10 3.11
+$ pyenv install 3.11 3.12
 ```
 
 ##### Moodle start/stop hooks
