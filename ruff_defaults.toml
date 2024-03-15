@@ -117,6 +117,9 @@ classmethod-decorators = ["pydantic.validator"]
 fixture-parentheses = false
 mark-parentheses = false
 
+[lint.flake8-tidy-imports]
+ban-relative-imports = "parents"
+
 [lint.isort]
 known-first-party = ["questionpy_common", "questionpy_sdk", "questionpy_server"]
 
