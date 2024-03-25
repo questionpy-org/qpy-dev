@@ -59,6 +59,7 @@
       - [ ] Use tomlkit to sync tooling config (`pyproject.toml`)
         - [ ] dependencies: check pylint, flake8, tox is not present
         - [ ] check `tool.tox` is not presence
+        - [ ] check no `tool.pylint*` are present
         - [ ] mypy, check keys/values from qpy-dev config are present and match
         - [ ] `tool.pytest.ini_options`
           - `asyncio_mode = "auto"`, ignore others
@@ -68,7 +69,6 @@
         - [ ] ruff
           - check `extend = "ruff_defaults.toml"` option is present
           - check that `extend-*` variants are used
-        - [ ] check no `tool.pylint*` are present
   - Docs
     - [x] Build docs using mkdocs
     - [x] Watch docs
@@ -87,7 +87,7 @@
       ignore = F403 F405 W503
       ```
   - [x] Remove tox config from individual repos
-  - [ ] Update GH actions
+  - [X] Update GH actions
   - Other less important
     - [ ] Add https://github.com/commitizen-tools/commitizen?
     - [ ] Fix this bug and create PR: https://github.com/nat-n/poethepoet/issues/198
