@@ -1,0 +1,22 @@
+### check
+
+[tool.poe.tasks.check]
+help = "Run lint, fmt --check, typecheck and test tasks."
+deps = ["_clone:ensure-repos:qpy"]
+uses = { _repos = "_utils:parse-repos $repos" }
+shell = """
+  for repo in $_repos; do
+    echo -e "${COLOR_TASK}[typecheck] ${COLOR_REPO}(${repo})${COLOR_OFF}"
+    poetry run poe lint $repo
+    poetry run poe fmt --check $repo
+    poetry run poe typecheck $repo
+    poetry run poe test $repo
+  done
+"""
+
+  [[tool.poe.tasks.check.args]]
+  name = "repos"
+  positional = true
+  multiple = true
+  help = "List of repositories to run tasks on (common, sdk, server or all)."
+  default = "all"

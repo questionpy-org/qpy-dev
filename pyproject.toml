@@ -39,6 +39,7 @@ include = [
   "./modules/fmt.toml",
   "./modules/typecheck.toml",
   "./modules/test.toml",
+  "./modules/check.toml",
   "./modules/tox.toml",
   "./modules/venv.toml",
   "./modules/docs.toml",
