@@ -6,7 +6,6 @@ deps = ["_clone:ensure-repos:qpy"]
 uses = { _repos = "_utils:parse-repos $repos" }
 shell = """
   for repo in $_repos; do
-    echo -e "${COLOR_TASK}[typecheck] ${COLOR_REPO}(${repo})${COLOR_OFF}"
     poetry run poe lint $repo
     poetry run poe fmt --check $repo
     poetry run poe typecheck $repo
