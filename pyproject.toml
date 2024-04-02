@@ -12,10 +12,10 @@ version = "0.0.0"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-poethepoet = "^0.24.4"
-poetry = "^1.7.1"
+poethepoet = "^0.25.0"
+poetry = "^1.8.2"
 watchdog = {version = "^4.0.0", extras = ["watchmedo"]}
-tox = "^4.13.0"
+tox = "^4.14.2"
 
 [tool.mypy]
 disallow_untyped_defs = true
