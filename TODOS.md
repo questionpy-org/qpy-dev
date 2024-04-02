@@ -44,6 +44,7 @@
         - [x] pytest
         - [x] coverage/report
         - [ ] phpunit (https://moodledev.io/general/development/process/testing)
+    - [x] Bump versions in `pyproject.toml`
     - [ ] git tasks
       - [ ] git clone
         - [x] all repos

@@ -792,6 +792,20 @@ poetry = ">=1.8.0,<2.0.0"
 poetry-core = ">=1.7.0,<2.0.0"
 
 [[package]]
+name = "poetry-plugin-up"
+version = "0.7.1"
+description = "Poetry plugin that updates dependencies and bumps their versions in pyproject.toml file"
+optional = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "poetry_plugin_up-0.7.1-py3-none-any.whl", hash = "sha256:57081db52ec8cd8d086a61ec87c101d0da3dac5aa8286b797afe2535098d435e"},
+    {file = "poetry_plugin_up-0.7.1.tar.gz", hash = "sha256:ffd7368cab41b6e0b3194d74ece077273725e1d883efcb4befc60189c157c812"},
+]
+
+[package.dependencies]
+poetry = ">=1.6.1,<2.0.0"
+
+[[package]]
 name = "ptyprocess"
 version = "0.7.0"
 description = "Run a subprocess in a pseudo terminal"
@@ -1307,4 +1321,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "028cb5f07854a4e6b7f5a7983a99dda866e5669eb44645a31388fcc53649ba55"
+content-hash = "06832627b79132a43c0f5020d7a6ca63757393ec3bfd2ea3ca5d8cbd428ae98f"

@@ -31,6 +31,7 @@ The most commonly used tasks.
 | `docs:watch`   | **Start docs dev server in watch mode.**                                                                                                                                                 |
 | `check`        | **Run all checks on projects.**<br>Runs checks *sequentially* against your current dev environment.<br>Preserves log output.                                                             |
 | `toxp`         | **Run all checks on projects using tox.**<br>Runs checks *in parallel* in separate virtual environments (suppressing log output).<br>Runs test suites against supported Python versions. |
+| `up`           | **Bump all versions in `pyproject.toml`.**                                                                                                                                               |
 | `moodle:*`     | **Manage Moodle dev stack.**                                                                                                                                                             |
 
 See the online help for a list of all available commands.

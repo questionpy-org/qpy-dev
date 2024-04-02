@@ -1,0 +1,33 @@
+### up
+
+[tool.poe.tasks.up]
+help = "Run Poetry Plugin up."
+deps = ["_clone:ensure-repos:qpy"]
+uses = { _repos = "_utils:parse-repos $repos" }
+shell = """
+  for repo in $_repos; do
+    echo -e "${COLOR_TASK}[up] ${COLOR_REPO}(${repo})${COLOR_OFF}"
+    poetry up -C questionpy/${repo} --with=dev,test,linter,type-checker $([ "$latest" = "True" ] && echo "--latest") $([ "$pinned" = "True" ] && echo "--pinned")
+  done
+"""
+
+  [[tool.poe.tasks.up.args]]
+  name = "repos"
+  positional = true
+  multiple = true
+  help = "List of repositories to run tasks on (common, sdk, server or all)."
+  default = "all"
+
+  [[tool.poe.tasks.up.args]]
+  name = "latest"
+  options = ["--latest"]
+  default = false
+  type = "boolean"
+  help = "Update to latest available compatible versions."
+
+  [[tool.poe.tasks.up.args]]
+  name = "pinned"
+  options = ["--pinned"]
+  default = false
+  type = "boolean"
+  help = "Include pinned (exact) dependencies when updating to latest."

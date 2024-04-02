@@ -14,6 +14,7 @@ version = "0.0.0"
 python = "^3.11"
 poethepoet = "^0.25.0"
 poetry = "^1.8.2"
+poetry-plugin-up = "^0.7.1"
 watchdog = {version = "^4.0.0", extras = ["watchmedo"]}
 tox = "^4.14.2"
 
@@ -43,6 +44,7 @@ include = [
   "./modules/tox.toml",
   "./modules/venv.toml",
   "./modules/docs.toml",
+  "./modules/up.toml",
   "./modules/config.toml",
   "./modules/moodle.toml",
   "./modules/clone.toml",
