@@ -2,9 +2,7 @@
 expr = """(
   "common sdk server"
   if repos == ["all"]
-  else " ".join(sorted(set(repos)))
-    if all(item in ["common", "sdk", "server"]
-    for item in repos) else ""
+  else " ".join(sorted(set(repo for repo in repos if repo in ["common", "sdk", "server"])))
 )"""
 args = [{ name = "repos", positional = true, multiple = true }]
 

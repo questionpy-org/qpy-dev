@@ -3,23 +3,41 @@
 [tool.poe.tasks.tox]
 help = "Run tox."
 deps = ["_clone:ensure-repos:qpy"]
-cmd = "tox"
+uses = { _envs = "_tox:parse-envs $envs" }
+cmd = "tox run -e $_envs"
 
-  [[tool.poe.tasks.lint.args]]
+  [[tool.poe.tasks.tox.args]]
   name = "envs"
   positional = true
-  help = "List of tox envs to run."
-  default = ""
+  multiple = true
+  help = "List of tox envs to run (default: all)."
+  default = "all"
 
 ### toxp
 
 [tool.poe.tasks.toxp]
 help = "Run tox (parallel)."
 deps = ["_clone:ensure-repos:qpy"]
-cmd = "tox -p"
+uses = { _envs = "_tox:parse-envs $envs" }
+cmd = "tox run-parallel -e $_envs"
 
-  [[tool.poe.tasks.lint.args]]
+  [[tool.poe.tasks.toxp.args]]
   name = "envs"
   positional = true
-  help = "List of tox envs to run."
-  default = ""
+  multiple = true
+  help = "List of tox envs to run (default: all)."
+  default = "all"
+
+### private tasks
+
+[tool.poe.tasks."_tox:parse-envs"]
+expr = """(
+  "ALL"
+  if envs == ["all"]
+  else ",".join(sorted(set(env for env in envs if env in ${allenvs}.split())))
+)"""
+args = [{ name = "envs", positional = true, multiple = true }]
+uses = { allenvs = "_tox:all-envs" }
+
+[tool.poe.tasks."_tox:all-envs"]
+shell = "tox list --no-desc | sort | uniq"
