@@ -19,10 +19,6 @@ sequence = [
   '_utils:msg moodle:start "Moodle running on http://localhost:${MOODLE_DOCKER_WEB_PORT}/"',
 ]
 
-[tool.poe.tasks."moodle:start".env]
-MOODLE_DOCKER_WWWROOT = "${POE_ROOT}/vendor/moodle"
-COMPOSE_PROJECT_NAME= "${MOODLE_DOCKER_COMPOSE_PROJECT_NAME}"
-
 ### moodle:stop
 
 [tool.poe.tasks."moodle:stop"]
@@ -39,10 +35,6 @@ sequence = [
   "_moodle:hook MOODLE_DOCKER_POST_STOP_HOOK '${COLOR_TASK}[moodle:stop] ${COLOR_MSG}Post-stop hook...${COLOR_OFF}'",
 ]
 
-[tool.poe.tasks."moodle:stop".env]
-MOODLE_DOCKER_WWWROOT = "${POE_ROOT}/vendor/moodle"
-COMPOSE_PROJECT_NAME= "${MOODLE_DOCKER_COMPOSE_PROJECT_NAME}"
-
 ### moodle:rm
 
 [tool.poe.tasks."moodle:rm"]
@@ -54,10 +46,6 @@ deps = [
   "_utils:msg moodle:rm",
 ]
 cmd = "./bin/moodle-docker-compose rm --volumes"
-
-[tool.poe.tasks."moodle:rm".env]
-MOODLE_DOCKER_WWWROOT = "${POE_ROOT}/vendor/moodle"
-COMPOSE_PROJECT_NAME= "${MOODLE_DOCKER_COMPOSE_PROJECT_NAME}"
 
 ### moodle:logs
 
@@ -71,10 +59,6 @@ deps = [
 ]
 cmd = "./bin/moodle-docker-compose logs --follow --tail=100 webserver"
 
-[tool.poe.tasks."moodle:logs".env]
-MOODLE_DOCKER_WWWROOT = "${POE_ROOT}/vendor/moodle"
-COMPOSE_PROJECT_NAME= "${MOODLE_DOCKER_COMPOSE_PROJECT_NAME}"
-
 ### moodle:docker-compose
 
 [tool.poe.tasks."moodle:docker-compose"]
@@ -86,10 +70,6 @@ deps = [
   "_utils:msg moodle:docker-compose",
 ]
 cmd = "./bin/moodle-docker-compose"
-
-[tool.poe.tasks."moodle:docker-compose".env]
-MOODLE_DOCKER_WWWROOT = "${POE_ROOT}/vendor/moodle"
-COMPOSE_PROJECT_NAME= "${MOODLE_DOCKER_COMPOSE_PROJECT_NAME}"
 
 ### private tasks
 

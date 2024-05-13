@@ -12,7 +12,7 @@ version = "0.0.0"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-poethepoet = "^0.25.0"
+poethepoet = "^0.26.1"
 poetry = "^1.8.2"
 poetry-plugin-up = "^0.7.1"
 watchdog = {version = "^4.0.0", extras = ["watchmedo"]}
@@ -57,10 +57,8 @@ COLOR_MSG = '\033[1;37m'
 COLOR_REPO = '\033[1;35m'
 COLOR_WARN = '\033[1;31m'
 COLOR_OFF = '\033[0m'
-# FIXME: set moodle-docker env vars globally once bug is resolved
-# https://github.com/nat-n/poethepoet/issues/198
-# MOODLE_DOCKER_WWWROOT = "${POE_ROOT}/vendor/moodle"
-# COMPOSE_PROJECT_NAME= "${MOODLE_DOCKER_COMPOSE_PROJECT_NAME}"
+MOODLE_DOCKER_WWWROOT = "${POE_ROOT}/vendor/moodle"
+COMPOSE_PROJECT_NAME= "${MOODLE_DOCKER_COMPOSE_PROJECT_NAME}"
 
 [tool.ruff]
 extend = "ruff_defaults.toml"
