@@ -105,7 +105,11 @@ ref = "_clone $REPO_QUESTIONPY_DOCS ./questionpy/docs"
 ref = "_clone $REPO_QUESTIONPY_DOTGITHUB ./questionpy/dotgithub --branch $REPO_QUESTIONPY_DOTGITHUB_TAG"
 
 [tool.poe.tasks."_clone:ensure-repos:qtype"]
-ref = "_clone $REPO_MOODLE_QTYPE_QUESTIONPY ./questionpy/moodle-qtype"
+deps = ["_clone:ensure-repos:moodle:code"]
+sequence = [
+  "_clone $REPO_MOODLE_QTYPE_QUESTIONPY ./vendor/moodle/question/type/questionpy",
+  { cmd = "ln -sfn ${POE_ROOT}/vendor/moodle/question/type/questionpy ./questionpy/moodle-qtype" },
+]
 
 [tool.poe.tasks."_clone:ensure-repos:moodle"]
 sequence = [
