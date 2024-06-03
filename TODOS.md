@@ -40,13 +40,13 @@
         - [ ] PHP_CodeSniffer (https://docs.moodle.org/dev/Linting)
       - [x] Format (check)
       - [x] Type-check
-      - [ ] Test
+      - [x] Test
         - [x] pytest
         - [x] coverage/report
-        - [ ] phpunit (https://moodledev.io/general/development/process/testing)
+        - [x] phpunit (https://moodledev.io/general/development/process/testing)
     - [x] Bump versions in `pyproject.toml`
     - [ ] git tasks
-      - [ ] git clone
+      - [x] git clone
         - [x] all repos
         - [x] some repos, single repo
         - [x] .github repo
@@ -54,7 +54,7 @@
     - [x] tox task
       - [x] make sure dev repos are used in tox
       - [x] add pyenv to requirements/add pyenv instructions
-    - [ ] Run GH actions locally through act?
+    - [ ] Run GH actions locally using [act](https://github.com/nektos/act)?
     - [ ] Sync tooling config into QPy repos
       - [x] `ruff_defaults.toml`
       - [ ] Use tomlkit to sync tooling config (`pyproject.toml`)
@@ -73,7 +73,7 @@
   - Docs
     - [x] Build docs using mkdocs
     - [x] Watch docs
-    - [ ] Publish docs
+    - [x] ~~Publish docs~~ ([solved using GitHub actions](https://github.com/questionpy-org/questionpy-docs/pull/8/commits/b7ebd6b38e2d66887b7b052da7e462ad674677f4))
 - **Update tooling**
   - [x] Add ruff (replacing Pylint, Flake8)
     - Possible to have preset rules (like Eslint sharable config)?  
@@ -82,11 +82,8 @@
           Solution: Have `ruff_defaults.toml` in `qpy-dev` and create command that sync's it into the QPy repos.  
           Look at [hatch default config](https://hatch.pypa.io/latest/config/static-analysis/#default-settings)  
           https://github.com/pypa/hatch/blob/master/ruff_defaults.toml
-    - extra rules?  
-      ```toml
-      # allow star imports, permit line breaks before (but not after) binary operators
-      ignore = F403 F405 W503
-      ```
+    - Ruff import formatting not configurable  
+      https://github.com/astral-sh/ruff/issues/2600
   - [x] Remove tox config from individual repos
   - [X] Update GH actions
   - Other less important
