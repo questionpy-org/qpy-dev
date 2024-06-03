@@ -71,6 +71,27 @@ deps = [
 ]
 cmd = "./bin/moodle-docker-compose"
 
+### moodle:test
+
+[tool.poe.tasks."moodle:test"]
+help = "Run PHPUnit tests."
+cwd = "./vendor/moodle-docker"
+deps = [
+  "_clone:ensure-repos:moodle",
+  "_moodle:ensure-docker",
+  "_moodle:ensure-moodle-docker-running",
+  "_moodle:ensure-phpunit-initialised",
+  "_utils:msg moodle:test",
+]
+cmd = "./bin/moodle-docker-compose exec webserver vendor/bin/phpunit question/type/questionpy/tests/$source --test-suffix=_test.php"
+
+  [[tool.poe.tasks."moodle:test".args]]
+  name = "source"
+  positional = true
+  help = "Test file or directory relative to `moodle-qtype/tests/`."
+  default = "."
+
+
 ### private tasks
 
 # Patch webserver service
@@ -100,6 +121,24 @@ shell = """
   if ! $(docker info >/dev/null 2>&1); then
     echo -e "${COLOR_WARN}Docker daemon is not running!${COLOR_OFF}"
     exit 1
+  fi
+"""
+
+[tool.poe.tasks."_moodle:ensure-moodle-docker-running"]
+cwd = "./vendor/moodle-docker"
+shell = """
+  if ! $(./bin/moodle-docker-compose exec webserver echo >/dev/null 2>&1); then
+    echo -e "${COLOR_WARN}Moodle docker is not running!${COLOR_OFF}"
+    echo -e "${COLOR_WARN}Use ${COLOR_TASK}[moodle:start]${COLOR_WARN} to start the stack.${COLOR_OFF}"
+    exit 1
+  fi
+"""
+
+[tool.poe.tasks."_moodle:ensure-phpunit-initialised"]
+cwd = "./vendor/moodle-docker"
+shell = """
+  if ! $(./bin/moodle-docker-compose exec webserver vendor/bin/phpunit question/type/questionpy --list-tests >/dev/null 2>&1); then
+    ./bin/moodle-docker-compose exec -T webserver php admin/tool/phpunit/cli/init.php
   fi
 """
 
