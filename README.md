@@ -87,7 +87,6 @@ When pushing code/merging PRs that involve multiple repositories, you will need
 to respect the package's dependency graph, meaning you have to adhere to a
 particular order to avoid failed CI pipelines.
 
-1. questionpy-common
 1. questionpy-server
 1. questionpy-sdk
 1. questionpy-docs

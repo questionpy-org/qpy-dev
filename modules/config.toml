@@ -13,7 +13,6 @@ sequence = [
 help = "Ensure package's ruff default config is in sync."
 deps = ["_clone:ensure-repos:qpy"]
 sequence = [
-  "_config:cp-ruff-defaults common",
   "_config:cp-ruff-defaults sdk",
   "_config:cp-ruff-defaults server",
 ]

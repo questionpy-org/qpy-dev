@@ -10,7 +10,6 @@ deps = [
 default_item_type = "cmd"
 sequence = [
   "pip install --no-input --disable-pip-version-check --requirement requirements-dev.txt",
-  "poetry run pip install --no-input --disable-pip-version-check --no-deps --editable questionpy/common",
   "poetry run pip install --no-input --disable-pip-version-check --no-deps --editable questionpy/sdk",
   "poetry run pip install --no-input --disable-pip-version-check --no-deps --editable questionpy/server",
 ]

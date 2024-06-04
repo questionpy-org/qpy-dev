@@ -28,7 +28,7 @@ class VersionConstraintError(Exception):
 
 
 class DependencyMerger:
-    PACKAGE_DIRS = ("common", "sdk", "server", "docs")
+    PACKAGE_DIRS = ("sdk", "server", "docs")
     GROUPS = (MAIN_GROUP, "dev", "test", "linter", "type-checker")
 
     def __init__(self, root_dir: Path) -> None:

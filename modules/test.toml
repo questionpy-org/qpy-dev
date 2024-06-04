@@ -15,7 +15,7 @@ uses = { _repos = "_utils:parse-repos $repos" }
   name = "repos"
   positional = true
   multiple = true
-  help = "List of repositories to test (common, sdk, server or all)."
+  help = "List of repositories to test (sdk, server or all)."
   default = "all"
 
 ### coverage
@@ -32,7 +32,7 @@ sequence = [
   name = "repos"
   positional = true
   multiple = true
-  help = "List of repositories to test (common, sdk, server or all)."
+  help = "List of repositories to test (sdk, server or all)."
   default = "all"
 
 ### coverage:generate
@@ -56,7 +56,7 @@ uses = { _repos = "_utils:parse-repos $repos" }
   name = "repos"
   positional = true
   multiple = true
-  help = "List of repositories to test (common, sdk, server or all)."
+  help = "List of repositories to test (sdk, server or all)."
   default = "all"
 
 ### coverage:report
@@ -76,5 +76,5 @@ uses = { _repos = "_utils:parse-repos $repos" }
   name = "repos"
   positional = true
   multiple = true
-  help = "List of repositories to test (common, sdk, server or all)."
+  help = "List of repositories to test (sdk, server or all)."
   default = "all"

@@ -16,5 +16,5 @@ shell = """
   name = "repos"
   positional = true
   multiple = true
-  help = "List of repositories to type-check (common, sdk, server or all)."
+  help = "List of repositories to type-check (sdk, server or all)."
   default = "all"

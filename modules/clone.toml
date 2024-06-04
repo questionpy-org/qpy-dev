@@ -13,16 +13,9 @@ sequence = [
 ### clone:qy
 
 [tool.poe.tasks."clone:qpy"]
-help = "Clone QuestionPy repositories (common, sdk, server)."
+help = "Clone QuestionPy repositories (sdk, server)."
 deps = ["_utils:msg clone:qpy"]
 ref = "_clone:ensure-repos:qpy"
-
-### clone:qy:common
-
-[tool.poe.tasks."clone:qpy:common"]
-help = "Clone questionpy-common repository."
-deps = ["_utils:msg clone:qpy:common"]
-ref = "_clone:ensure-repos:qpy:common"
 
 ### clone:qy:sdk
 
@@ -84,13 +77,9 @@ ref = "_clone:ensure-repos:moodle:docker"
 
 [tool.poe.tasks."_clone:ensure-repos:qpy"]
 sequence = [
-  "_clone:ensure-repos:qpy:common",
   "_clone:ensure-repos:qpy:sdk",
   "_clone:ensure-repos:qpy:server",
 ]
-
-[tool.poe.tasks."_clone:ensure-repos:qpy:common"]
-ref = "_clone $REPO_QUESTIONPY_COMMON ./questionpy/common"
 
 [tool.poe.tasks."_clone:ensure-repos:qpy:sdk"]
 ref = "_clone $REPO_QUESTIONPY_SDK ./questionpy/sdk"

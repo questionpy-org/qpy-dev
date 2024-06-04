@@ -15,5 +15,5 @@ uses = { _repos = "_utils:parse-repos $repos" }
   name = "repos"
   positional = true
   multiple = true
-  help = "List of repositories to lint (common, sdk, server or all)."
+  help = "List of repositories to lint (sdk, server or all)."
   default = "all"

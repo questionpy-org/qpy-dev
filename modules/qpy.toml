@@ -41,7 +41,7 @@ deps = [
 
 [tool.poe.tasks."_qpy:watch"]
 cwd = "./questionpy/server"
-cmd = "watchmedo auto-restart --pattern '*.py' --directory \"${POE_ROOT}/questionpy/common/questionpy_common\" --directory \"${POE_ROOT}/questionpy/server/questionpy_server\" --recursive --debounce-interval 1 python -- -m questionpy_server"
+cmd = "watchmedo auto-restart --pattern '*.py' --directory \"${POE_ROOT}/questionpy/server/questionpy_server\" --recursive --debounce-interval 1 python -- -m questionpy_server"
 deps = [
   "_clone:ensure-repos:qpy",
   "_qpy:ensure-config",
