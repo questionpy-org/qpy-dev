@@ -107,8 +107,8 @@ ref = "_clone $REPO_QUESTIONPY_DOTGITHUB ./questionpy/dotgithub --branch $REPO_Q
 [tool.poe.tasks."_clone:ensure-repos:qtype"]
 deps = ["_clone:ensure-repos:moodle:code"]
 sequence = [
-  "_clone $REPO_MOODLE_QTYPE_QUESTIONPY ./vendor/moodle/question/type/questionpy",
-  { cmd = "ln -sfn ${POE_ROOT}/vendor/moodle/question/type/questionpy ./questionpy/moodle-qtype" },
+  "_clone $REPO_MOODLE_QTYPE_QUESTIONPY ./external/moodle/question/type/questionpy",
+  { cmd = "ln -sfn ${POE_ROOT}/external/moodle/question/type/questionpy ./questionpy/moodle-qtype" },
 ]
 
 [tool.poe.tasks."_clone:ensure-repos:moodle"]
@@ -118,10 +118,10 @@ sequence = [
 ]
 
 [tool.poe.tasks."_clone:ensure-repos:moodle:code"]
-ref = "_clone $REPO_MOODLE ./vendor/moodle --branch $REPO_MOODLE_TAG"
+ref = "_clone $REPO_MOODLE ./external/moodle --branch $REPO_MOODLE_TAG"
 
 [tool.poe.tasks."_clone:ensure-repos:moodle:docker"]
-ref = "_clone $REPO_MOODLE_DOCKER ./vendor/moodle-docker --branch main"
+ref = "_clone $REPO_MOODLE_DOCKER ./external/moodle-docker --branch main"
 
 [tool.poe.tasks."_clone"]
 shell = """

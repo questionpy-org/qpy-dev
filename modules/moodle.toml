@@ -2,7 +2,7 @@
 
 [tool.poe.tasks."moodle:start"]
 help = "Start Moodle Docker stack."
-cwd = "./vendor/moodle-docker"
+cwd = "./external/moodle-docker"
 deps = [
   "_clone:ensure-repos:moodle",
   "_moodle:add-local-yml",
@@ -23,7 +23,7 @@ sequence = [
 
 [tool.poe.tasks."moodle:stop"]
 help = "Stop Moodle stack."
-cwd = "./vendor/moodle-docker"
+cwd = "./external/moodle-docker"
 deps = [
   "_clone:ensure-repos:moodle",
   "_moodle:ensure-docker",
@@ -39,7 +39,7 @@ sequence = [
 
 [tool.poe.tasks."moodle:rm"]
 help = "Destroy Moodle stack (clear database)."
-cwd = "./vendor/moodle-docker"
+cwd = "./external/moodle-docker"
 deps = [
   "_clone:ensure-repos:moodle",
   "_moodle:ensure-docker",
@@ -51,7 +51,7 @@ cmd = "./bin/moodle-docker-compose rm --volumes"
 
 [tool.poe.tasks."moodle:logs"]
 help = "Follow Moodle logs."
-cwd = "./vendor/moodle-docker"
+cwd = "./external/moodle-docker"
 deps = [
   "_clone:ensure-repos:moodle",
   "_moodle:ensure-docker",
@@ -63,7 +63,7 @@ cmd = "./bin/moodle-docker-compose logs --follow --tail=100 webserver"
 
 [tool.poe.tasks."moodle:docker-compose"]
 help = "Moodle docker-compose command."
-cwd = "./vendor/moodle-docker"
+cwd = "./external/moodle-docker"
 deps = [
   "_clone:ensure-repos:moodle",
   "_moodle:ensure-docker",
@@ -75,7 +75,7 @@ cmd = "./bin/moodle-docker-compose"
 
 [tool.poe.tasks."moodle:test"]
 help = "Run PHPUnit tests."
-cwd = "./vendor/moodle-docker"
+cwd = "./external/moodle-docker"
 deps = [
   "_clone:ensure-repos:moodle",
   "_moodle:ensure-docker",
@@ -91,6 +91,24 @@ cmd = "./bin/moodle-docker-compose exec webserver vendor/bin/phpunit question/ty
   help = "Test file or directory relative to `moodle-qtype/tests/`."
   default = "."
 
+### moodle:lint
+
+[tool.poe.tasks."moodle:lint"]
+help = "Run PHP_CodeSniffer linter."
+cwd = "./external/moodle/question/type/questionpy"
+deps = [
+  "_clone:ensure-repos:moodle",
+  "_clone:ensure-repos:qtype",
+  "_moodle:ensure-codesniffer phpcs",
+  "_utils:msg moodle:lint",
+]
+cmd = "phpcs $source -p --colors"
+
+  [[tool.poe.tasks."moodle:lint".args]]
+  name = "source"
+  positional = true
+  help = "File or directory relative to `moodle-qtype/`."
+  default = "."
 
 ### private tasks
 
@@ -99,7 +117,7 @@ cmd = "./bin/moodle-docker-compose exec webserver vendor/bin/phpunit question/ty
 #   using a fixed host name.
 # - Add qtype-questionpy as mounted volume.
 [tool.poe.tasks."_moodle:add-local-yml"]
-cwd = "./vendor/moodle-docker"
+cwd = "./external/moodle-docker"
 deps = ["_clone:ensure-repos:qtype"]
 shell = """
   [[ -f local.yml ]] && exit 0
@@ -112,8 +130,8 @@ shell = """
 
 [tool.poe.tasks."_moodle:ensure-moodle-config"]
 shell = """
-  [[ -f vendor/moodle/config.php ]] && exit 0
-  cp vendor/moodle-docker/config.docker-template.php vendor/moodle/config.php
+  [[ -f external/moodle/config.php ]] && exit 0
+  cp external/moodle-docker/config.docker-template.php external/moodle/config.php
 """
 
 [tool.poe.tasks."_moodle:ensure-docker"]
@@ -125,7 +143,7 @@ shell = """
 """
 
 [tool.poe.tasks."_moodle:ensure-moodle-docker-running"]
-cwd = "./vendor/moodle-docker"
+cwd = "./external/moodle-docker"
 shell = """
   if ! $(./bin/moodle-docker-compose exec webserver echo >/dev/null 2>&1); then
     echo -e "${COLOR_WARN}Moodle docker is not running!${COLOR_OFF}"
@@ -135,10 +153,50 @@ shell = """
 """
 
 [tool.poe.tasks."_moodle:ensure-phpunit-initialised"]
-cwd = "./vendor/moodle-docker"
+cwd = "./external/moodle-docker"
 shell = """
   if ! $(./bin/moodle-docker-compose exec webserver vendor/bin/phpunit question/type/questionpy --list-tests >/dev/null 2>&1); then
     ./bin/moodle-docker-compose exec -T webserver php admin/tool/phpunit/cli/init.php
+  fi
+"""
+
+[tool.poe.tasks."_moodle:ensure-phpcs"]
+cwd = "./external/moodle"
+shell = """
+  # Check if 'phpcs' is installed.
+  if ! $(command -v phpcs >/dev/null 2>&1); then
+    echo -e "${COLOR_WARN}Could not find '${COLOR_MSG}phpcs${COLOR_OFF}${COLOR_WARN}'!${COLOR_OFF}"
+    echo -e "${COLOR_WARN}Please install it with${COLOR_OFF}"
+    echo -e "    ${COLOR_MSG}composer global require 'squizlabs/php_codesniffer=*'${COLOR_OFF}"
+    exit 1
+  fi
+
+  # Check if the 'moodle-extra' ruleset is installed.
+  if ! $(phpcs -i | grep -w moodle-extra >/dev/null 2>&1); then
+    echo -e "${COLOR_WARN}Could not find the '${COLOR_MSG}moodle-extra${COLOR_OFF}${COLOR_WARN}' ruleset!${COLOR_OFF}"
+    echo -e "${COLOR_WARN}Please install it with${COLOR_OFF}"
+    echo -e "    ${COLOR_MSG}composer global config minimum-stability dev${COLOR_OFF}"
+    echo -e "    ${COLOR_MSG}composer global require moodlehq/moodle-cs${COLOR_OFF}"
+    exit 1
+  fi
+
+  # Check if the custom ruleset exists and create it if necessary.
+  if [ ! -f .phpcs.xml ]; then
+    echo '<?xml version="1.0" encoding="UTF-8"?>
+    <ruleset name="QuestionPy">
+        <rule ref="./phpcs.xml"/>
+        <rule ref="moodle-extra">
+            <exclude name="moodle.Commenting.TodoComment"/>
+            <exclude name="Squiz.Functions.MultiLineFunctionDeclaration"/>
+        </rule>
+    </ruleset>' > .phpcs.xml
+  fi
+
+  # Check if the 'phpcs.xml' exists and create it if necessary.
+  if [ ! -f phpcs.xml ]; then
+    echo -e "${COLOR_MSG}Generating 'phpcs.xml' file...${COLOR_OFF}"
+    npm install >/dev/null 2>&1
+    grunt ignorefiles >/dev/null 2>&1
   fi
 """
 
