@@ -110,6 +110,25 @@ cmd = "phpcs $source -p --colors"
   help = "File or directory relative to `moodle-qtype/`."
   default = "."
 
+### moodle:fmt
+
+[tool.poe.tasks."moodle:fmt"]
+help = "Run PHP_CodeSniffer formatter."
+cwd = "./external/moodle/question/type/questionpy"
+deps = [
+  "_clone:ensure-repos:moodle",
+  "_clone:ensure-repos:qtype",
+  "_moodle:ensure-codesniffer phpcbf",
+  "_utils:msg moodle:fmt",
+]
+cmd = "phpcbf $source -p --colors"
+
+  [[tool.poe.tasks."moodle:fmt".args]]
+  name = "source"
+  positional = true
+  help = "File or directory relative to `moodle-qtype/`."
+  default = "."
+
 ### private tasks
 
 # Patch webserver service
@@ -160,19 +179,19 @@ shell = """
   fi
 """
 
-[tool.poe.tasks."_moodle:ensure-phpcs"]
+[tool.poe.tasks."_moodle:ensure-codesniffer"]
 cwd = "./external/moodle"
 shell = """
-  # Check if 'phpcs' is installed.
-  if ! $(command -v phpcs >/dev/null 2>&1); then
-    echo -e "${COLOR_WARN}Could not find '${COLOR_MSG}phpcs${COLOR_OFF}${COLOR_WARN}'!${COLOR_OFF}"
+  # Check if the script is installed.
+  if ! $(command -v $script >/dev/null 2>&1); then
+    echo -e "${COLOR_WARN}Could not find '${COLOR_MSG}$script${COLOR_OFF}${COLOR_WARN}'!${COLOR_OFF}"
     echo -e "${COLOR_WARN}Please install it with${COLOR_OFF}"
     echo -e "    ${COLOR_MSG}composer global require 'squizlabs/php_codesniffer=*'${COLOR_OFF}"
     exit 1
   fi
 
   # Check if the 'moodle-extra' ruleset is installed.
-  if ! $(phpcs -i | grep -w moodle-extra >/dev/null 2>&1); then
+  if ! $($script -i | grep -w moodle-extra >/dev/null 2>&1); then
     echo -e "${COLOR_WARN}Could not find the '${COLOR_MSG}moodle-extra${COLOR_OFF}${COLOR_WARN}' ruleset!${COLOR_OFF}"
     echo -e "${COLOR_WARN}Please install it with${COLOR_OFF}"
     echo -e "    ${COLOR_MSG}composer global config minimum-stability dev${COLOR_OFF}"
@@ -199,6 +218,11 @@ shell = """
     grunt ignorefiles >/dev/null 2>&1
   fi
 """
+
+    [[tool.poe.tasks."_moodle:ensure-codesniffer".args]]
+    name = "script"
+    positional = true
+    required = true
 
 [tool.poe.tasks."_moodle:hook"]
 shell = """
