@@ -2,7 +2,7 @@
 
 - **Manage unified single virtual env**
   - [x] Install repo deps in a unified dev venv
-    - [x] Installing in less pip calls possible? Maybe just use a tempory `requirements.txt`?
+    - [x] Installing in less pip calls possible? Maybe just use a temporary `requirements.txt`?
   - [x] "Dependency Merger" (creates list of conflict-free dependencies from all repos)
       - [x] Implement merger
       - [x] Check if repo deps are conflict-free
@@ -14,7 +14,7 @@
       - [x] Consider dep extras: use union of conflicting deps extras
       - (Idea: Choose one or the other interactively when a conflict occurs. Can also be done manually/is probably overkill.)
 - **Common developer tasks and workflows**
-  - post-checkout hook that set ups venv automatically?
+  - post-checkout hook that sets up venv automatically?
   - [x] Manage Moodle dev stack
     - [x] Tasks
       - [x] start
@@ -37,7 +37,7 @@
     - [x] All some/repos
       - [ ] Lint
         - [x] ruff
-        - [ ] PHP_CodeSniffer (https://docs.moodle.org/dev/Linting)
+        - [x] PHP_CodeSniffer (https://docs.moodle.org/dev/Linting)
       - [x] Format (check)
       - [x] Type-check
       - [x] Test
