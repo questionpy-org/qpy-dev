@@ -11,7 +11,7 @@
 ```sh
 $ git clone git@github.com:questionpy-org/qpy-dev.git
 $ cd qpy-dev
-$ poetry install --no-root
+$ poetry install
 $ alias poe="poetry run poe"
 $ poe venv:install
 $ poe moodle:start
