@@ -16,8 +16,8 @@ python = "^3.11"
 poethepoet = "^0.26.1"
 poetry = "^1.8.3"
 poetry-plugin-up = "^0.7.1"
-watchdog = {version = "^4.0.0", extras = ["watchmedo"]}
-tox = "^4.15.0"
+watchdog = {version = "^4.0.1", extras = ["watchmedo"]}
+tox = "^4.15.1"
 
 [tool.mypy]
 disallow_untyped_defs = true
