@@ -10,35 +10,35 @@ sequence = [
   "_clone:ensure-repos:moodle",
 ]
 
-### clone:qy
+### clone:qpy
 
 [tool.poe.tasks."clone:qpy"]
 help = "Clone QuestionPy repositories (sdk, server)."
 deps = ["_utils:msg clone:qpy"]
 ref = "_clone:ensure-repos:qpy"
 
-### clone:qy:sdk
+### clone:qpy:sdk
 
 [tool.poe.tasks."clone:qpy:sdk"]
 help = "Clone questionpy-sdk repository."
 deps = ["_utils:msg clone:qpy:sdk"]
 ref = "_clone:ensure-repos:qpy:sdk"
 
-### clone:qy:server
+### clone:qpy:server
 
 [tool.poe.tasks."clone:qpy:server"]
 help = "Clone questionpy-server repository."
 deps = ["_utils:msg clone:qpy:server"]
 ref = "_clone:ensure-repos:qpy:server"
 
-### clone:qy:docs
+### clone:qpy:docs
 
 [tool.poe.tasks."clone:docs"]
 help = "Clone questionpy-docs repository."
 deps = ["_utils:msg clone:docs"]
 ref = "_clone:ensure-repos:docs"
 
-### clone:qy:dotgithub
+### clone:qpy:dotgithub
 
 [tool.poe.tasks."clone:dotgithub"]
 help = "Clone .github repository."
