@@ -6,7 +6,9 @@ deps = ["_clone:ensure-repos:qpy"]
 shell = """
   for repo in $_repos; do
     echo -e "${COLOR_TASK}[test] ${COLOR_REPO}(${repo})${COLOR_OFF}"
-    pytest --rootdir=./questionpy/$repo ./questionpy/$repo
+    pushd ./questionpy/$repo >/dev/null
+    pytest
+    popd >/dev/null
   done
 """
 uses = { _repos = "_utils:parse-repos $repos" }
