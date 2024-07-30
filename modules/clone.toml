@@ -107,7 +107,7 @@ sequence = [
 ]
 
 [tool.poe.tasks."_clone:ensure-repos:moodle:code"]
-ref = "_clone $REPO_MOODLE ./external/moodle --branch $REPO_MOODLE_TAG"
+ref = "_clone $REPO_MOODLE ./external/moodle --branch $REPO_MOODLE_BRANCH"
 
 [tool.poe.tasks."_clone:ensure-repos:moodle:docker"]
 ref = "_clone $REPO_MOODLE_DOCKER ./external/moodle-docker --branch main"

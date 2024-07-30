@@ -180,7 +180,6 @@ shell = """
 """
 
 [tool.poe.tasks."_moodle:ensure-codesniffer"]
-cwd = "./external/moodle"
 shell = """
   # Check if the script is installed.
   if ! $(command -v $script >/dev/null 2>&1); then
@@ -197,25 +196,6 @@ shell = """
     echo -e "    ${COLOR_MSG}composer global config minimum-stability dev${COLOR_OFF}"
     echo -e "    ${COLOR_MSG}composer global require moodlehq/moodle-cs${COLOR_OFF}"
     exit 1
-  fi
-
-  # Check if the custom ruleset exists and create it if necessary.
-  if [ ! -f .phpcs.xml ]; then
-    echo '<?xml version="1.0" encoding="UTF-8"?>
-    <ruleset name="QuestionPy">
-        <rule ref="./phpcs.xml"/>
-        <rule ref="moodle-extra">
-            <exclude name="moodle.Commenting.TodoComment"/>
-            <exclude name="Squiz.Functions.MultiLineFunctionDeclaration"/>
-        </rule>
-    </ruleset>' > .phpcs.xml
-  fi
-
-  # Check if the 'phpcs.xml' exists and create it if necessary.
-  if [ ! -f phpcs.xml ]; then
-    echo -e "${COLOR_MSG}Generating 'phpcs.xml' file...${COLOR_OFF}"
-    npm install >/dev/null 2>&1
-    grunt ignorefiles >/dev/null 2>&1
   fi
 """
 
