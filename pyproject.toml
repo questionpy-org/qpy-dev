@@ -13,11 +13,11 @@ package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.11"
-poethepoet = "^0.26.1"
+poethepoet = "^0.27.0"
 poetry = "^1.8.3"
-poetry-plugin-up = "^0.7.1"
-watchdog = {version = "^4.0.1", extras = ["watchmedo"]}
-tox = "^4.15.1"
+poetry-plugin-up = "^0.7.2"
+watchdog = {version = "^4.0.2", extras = ["watchmedo"]}
+tox = "^4.17.1"
 
 [tool.mypy]
 disallow_untyped_defs = true
