@@ -140,8 +140,7 @@ cwd = "./external/moodle-docker"
 deps = ["_clone:ensure-repos:qtype"]
 shell = """
   [[ -f local.yml ]] && exit 0
-  echo 'version: "2"
-  services:
+  echo 'services:
     webserver:
       extra_hosts:
         - "host.docker.internal:host-gateway"' > local.yml
