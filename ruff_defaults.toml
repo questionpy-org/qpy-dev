@@ -69,6 +69,12 @@ extend-select = [
 ]
 
 ignore = [
+  # builtin-module-shadowing (relative module names such as 'abc' or 'types' are pretty normal)
+  "A005",
+
+  # allow async functions with timeout parameter
+  "ASYNC109",
+
   # Relax on missing docstrings
   "D1",
 
