@@ -5,6 +5,8 @@ help = "Start Moodle Docker stack."
 cwd = "./external/moodle-docker"
 deps = [
   "_clone:ensure-repos:moodle",
+  "_clone:ensure-repos:qtype",
+  "_clone:ensure-repos:qbehaviour",
   "_moodle:add-local-yml",
   "_moodle:ensure-moodle-config",
   "_moodle:ensure-docker",
@@ -134,10 +136,9 @@ cmd = "phpcbf $source -p --colors"
 # Patch webserver service
 # - Add entry to /etc/hosts file, so that Moodle can access the QPy server
 #   using a fixed host name.
-# - Add qtype-questionpy as mounted volume.
 [tool.poe.tasks."_moodle:add-local-yml"]
 cwd = "./external/moodle-docker"
-deps = ["_clone:ensure-repos:qtype"]
+deps = ["_clone:ensure-repos:moodle:docker"]
 shell = """
   [[ -f local.yml ]] && exit 0
   echo 'services:
