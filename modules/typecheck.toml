@@ -9,6 +9,9 @@ shell = """
     echo -e "${COLOR_TASK}[typecheck] ${COLOR_REPO}(${repo})${COLOR_OFF}"
     cd "${POE_ROOT}/questionpy/${repo}"
     mypy .
+    if [ "$repo" = "sdk" ]; then
+      npm --prefix "${POE_ROOT}/questionpy/sdk/frontend" run type-check
+    fi
   done
 """
 

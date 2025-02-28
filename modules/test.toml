@@ -9,6 +9,9 @@ shell = """
     pushd ./questionpy/$repo >/dev/null
     pytest
     popd >/dev/null
+    if [ "$repo" = "sdk" ]; then
+      npm --prefix "${POE_ROOT}/questionpy/sdk/frontend" run test
+    fi
   done
 """
 uses = { _repos = "_utils:parse-repos $repos" }

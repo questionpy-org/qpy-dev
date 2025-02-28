@@ -7,6 +7,9 @@ shell = """
   for repo in $_repos; do
     echo -e "${COLOR_TASK}[lint] ${COLOR_REPO}(${repo})${COLOR_OFF}"
     ruff check --config ./questionpy/$repo/pyproject.toml ./questionpy/$repo
+    if [ "$repo" = "sdk" ]; then
+      npm --prefix "${POE_ROOT}/questionpy/sdk/frontend" run lint
+    fi
   done
 """
 uses = { _repos = "_utils:parse-repos $repos" }

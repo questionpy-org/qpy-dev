@@ -9,6 +9,10 @@ shell = """
   for repo in $_repos; do
     echo -e "${COLOR_TASK}[fmt] ${COLOR_REPO}(${repo})${COLOR_OFF}"
     ruff format --config ./questionpy/$repo/pyproject.toml ${check_flag} ./questionpy/$repo
+    if [ "$repo" = "sdk" ]; then
+      fmt_script=$([ "$check" = "True" ] && echo "format-check" || echo "format")
+      npm --prefix "${POE_ROOT}/questionpy/sdk/frontend" run $fmt_script
+    fi
   done
 """
 uses = { _repos = "_utils:parse-repos $repos" }
