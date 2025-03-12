@@ -77,7 +77,7 @@ extend = "ruff_defaults.toml"
 legacy_tox_ini = """
 [tox]
 env_list =
-  py{311,312}-{sdk,server}-test
+  py{311,312,313}-{sdk,server}-test
   {sdk,server}-{format,lint,typecheck}
 minversion = 4.23.0
 
