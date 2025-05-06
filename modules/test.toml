@@ -8,10 +8,11 @@ shell = """
     echo -e "${COLOR_TASK}[test] ${COLOR_REPO}(${repo})${COLOR_OFF}"
     pushd ./questionpy/$repo >/dev/null
     pytest
-    popd >/dev/null
     if [ "$repo" = "sdk" ]; then
+      ./run_e2e_tests.sh
       npm --prefix "${POE_ROOT}/questionpy/sdk/frontend" run test
     fi
+    popd >/dev/null
   done
 """
 uses = { _repos = "_utils:parse-repos $repos" }
