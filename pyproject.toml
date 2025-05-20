@@ -1,22 +1,28 @@
+[project]
+name = "qpy-dev"
+version = "0.0.0"
+description = "Dev repository to facilitate multi-repo development for QuestionPy"
+readme = "README.md"
+requires-python = ">=3.12,<4.0.0"
+license = {file = "LICENSE.md"}
+authors = [
+  {email = "info@isis.tu-berlin.de"},
+  {name = "innoCampus"}
+]
+urls = { Homepage = "https://questionpy.org" }
+dependencies = [
+  "poethepoet >=0.34.0, <1.0.0",
+  "poetry >=2.1.0, <3.0.0",
+  "watchdog[watchmedo] >=6.0.0, <7.0.0",
+  "tox >=4.26.0, <5.0.0",
+]
+
 [build-system]
 requires = ["poetry_core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "qpy-dev"
-description = "Dev repository to facilitate multi-repo development for QuestionPy"
-authors = ["Technische Universität Berlin, innoCampus <info@isis.tu-berlin.de>"]
-license = "MIT"
-homepage = "https://questionpy.org"
-version = "0.0.0"
 package-mode = false
-
-[tool.poetry.dependencies]
-python = "^3.12"
-poethepoet = "^0.34.0"
-poetry = "^2.1.1"
-watchdog = {version = "^6.0.0", extras = ["watchmedo"]}
-tox = "^4.25.0"
 
 [tool.mypy]
 disallow_untyped_defs = true
